@@ -2,7 +2,7 @@
 name = "is_prime"
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
+authors = ["Ben Puryear <benpuryear@hotmail.com>"]
+description = "A sample Rust project for calculating prime numbers"
+license = "MIT OR Apache-2.0"
+keywords = ["rust", "testing", "beginner", "prime"]
