@@ -1,6 +1,6 @@
 [package]
 name = "bens_is_prime"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2021"
 authors = ["Ben Puryear <benpuryear@hotmail.com>"]
 description = "A sample Rust project for calculating prime numbers"
