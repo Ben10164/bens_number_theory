@@ -1,4 +1,4 @@
-use bens_number_theory;
+use bens_number_theory::{self, primes::is_mersenne_prime};
 
 fn main() {
     // println!("Enter an i32: ");
@@ -10,6 +10,11 @@ fn main() {
     // }
 
     println!("Hello, world!");
-    bens_number_theory::read!(n as u128);
-    println!("{}", bens_number_theory::factorial::factorial(n));
+    let mut i = 2;
+    while i < 32{
+        if is_mersenne_prime((2_u128.pow(i)) - 1){
+            println!("{}",i);
+        }
+        i += 1;
+    }
 }
