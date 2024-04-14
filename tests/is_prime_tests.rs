@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod tests {
-    use bens_is_prime::{generate_primes, is_prime_list, is_prime};
+    use bens_number_theory::primes::{generate_primes, is_prime, is_prime_list};
 
     #[test]
     fn is_prime_test() {

@@ -1,12 +1,11 @@
-use bens_is_prime;
+use bens_number_theory;
 
 fn main() {
     println!("Enter an i32: ");
-    bens_is_prime::read!(n as i32);
-    if bens_is_prime::is_prime(n) {
+    bens_number_theory::read!(n as i32);
+    if bens_number_theory::primes::is_prime(n) {
         println!("{} is a prime number", n);
-    }else{
+    } else {
         println!("{} is not a prime number", n);
     }
 }
-

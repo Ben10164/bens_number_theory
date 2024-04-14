@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "bens_is_prime"
-version = "0.2.1"
+name = "bens_number_theory"
+version = "0.2.2"

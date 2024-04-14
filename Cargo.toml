@@ -1,8 +1,8 @@
 [package]
-name = "bens_is_prime"
-version = "0.2.1"
+name = "bens_number_theory"
+version = "0.2.2"
 edition = "2021"
-authors = ["Ben Puryear <benpuryear@hotmail.com>"]
+authors = ["Ben10164 <benpuryear@hotmail.com>"]
 description = "A sample Rust project for calculating prime numbers"
 license = "MIT OR Apache-2.0"
 keywords = ["rust", "testing", "beginner", "prime"]
