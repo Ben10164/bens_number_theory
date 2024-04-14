@@ -2,6 +2,41 @@ pub mod macros;
 
 /// Check if a given number is prime.
 ///
+/// This function takes a number `n`
+///
+/// # Arguments
+///
+/// * `n` - The number to check for primality.
+///
+/// # Returns
+///
+/// A boolean value indicating whether the number is prime (`true`) or not (`false`).
+///
+/// # Examples
+///
+/// ```
+/// use bens_is_prime::is_prime;
+/// assert_eq!(is_prime(9), false);
+/// assert_eq!(is_prime(11), true);
+/// ```
+pub fn is_prime(n: i32) -> bool {
+    let limit: f32 = (n as f32).sqrt();
+    let p = generate_primes((n/2) + 1);
+    for prime in &p {
+        if n % prime == 0 {
+            return false;
+        }
+        if *prime as f32 > limit {
+            return true;
+        }
+    }
+    // due to Bertrand's postulate, this should never be reached
+    // (if we are calculating sequentially)
+    return false;
+}
+
+/// Check if a given number is prime using an efficient method optimized for in-order generation.
+///
 /// This function takes a number `n` and a vector of prime numbers `p`.
 /// It iterates through the prime numbers less than or equal to the square root of `n`,
 /// checking if any of them divide `n`. If `n` is divisible by any prime, it returns `false`,
@@ -20,12 +55,12 @@ pub mod macros;
 /// # Examples
 ///
 /// ```
-/// use is_prime::is_prime;
+/// use bens_is_prime::is_prime_list;
 /// let primes = vec![2, 3, 5, 7];
-/// assert_eq!(is_prime(9, primes.clone()), false);
-/// assert_eq!(is_prime(11, primes), true);
+/// assert_eq!(is_prime_list(9, primes.clone()), false);
+/// assert_eq!(is_prime_list(11, primes), true);
 /// ```
-pub fn is_prime(n: i32, p: Vec<i32>) -> bool {
+pub fn is_prime_list(n: i32, p: Vec<i32>) -> bool {
     let limit: f32 = (n as f32).sqrt();
     for prime in &p {
         if n % prime == 0 {
@@ -54,7 +89,7 @@ pub fn is_prime(n: i32, p: Vec<i32>) -> bool {
 /// # Examples
 ///
 /// ```
-/// use is_prime::generate_primes;
+/// use bens_is_prime::generate_primes;
 /// assert_eq!(generate_primes(10), vec![2, 3, 5, 7]);
 /// ```
 pub fn generate_primes(limit: i32) -> Vec<i32> {
@@ -64,7 +99,7 @@ pub fn generate_primes(limit: i32) -> Vec<i32> {
     let mut p: Vec<i32> = vec![2, 3];
     let mut n = 5;
     while n < limit {
-        if is_prime(n, p.clone()) {
+        if is_prime_list(n, p.clone()) {
             p.push(n);
         }
         n += 2;

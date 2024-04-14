@@ -1,17 +1,14 @@
 #[cfg(test)]
 mod tests {
-    use is_prime::{generate_primes, is_prime};
+    use bens_is_prime::{generate_primes, is_prime_list, is_prime};
 
     #[test]
     fn is_prime_test() {
-        // Test cases for prime number detection
-        let primes = vec![2, 3, 5, 7];
-
         // 9 is not prime
-        assert_eq!(is_prime(9, primes.clone()), false);
+        assert_eq!(is_prime(9), false);
 
-        // 11 is prime
-        assert_eq!(is_prime(11, primes), true);
+        // 11 is is_prime_list
+        assert_eq!(is_prime(11), true);
     }
 
     #[test]
@@ -36,9 +33,9 @@ mod tests {
     fn is_prime_large_test() {
         // Test case for checking prime numbers up to a large limit
         let primes = generate_primes(100);
-        assert_eq!(is_prime(97, primes.clone()), true); // 97 is prime
-        assert_eq!(is_prime(99, primes.clone()), false); // 99 is not prime
-        assert_eq!(is_prime(101, primes), true); // 101 is prime
+        assert_eq!(is_prime_list(97, primes.clone()), true); // 97 is prime
+        assert_eq!(is_prime_list(99, primes.clone()), false); // 99 is not prime
+        assert_eq!(is_prime_list(101, primes), true); // 101 is prime
     }
 
     #[test]
@@ -52,8 +49,8 @@ mod tests {
     fn is_prime_negative_numbers_test() {
         // Test case for negative numbers
         let primes = vec![2, 3, 5, 7];
-        assert_eq!(is_prime(-7, primes.clone()), false); // -7 is not prime
-        assert_eq!(is_prime(-11, primes), false); // -11 is not prime
+        assert_eq!(is_prime_list(-7, primes.clone()), false); // -7 is not prime
+        assert_eq!(is_prime_list(-11, primes), false); // -11 is not prime
     }
 
     #[test]
@@ -67,8 +64,8 @@ mod tests {
     fn is_prime_edge_case_test() {
         // Test case for edge cases of prime number detection
         let primes = vec![2, 3, 5, 7];
-        assert_eq!(is_prime(i32::MAX, primes.clone()), false); // Maximum i32 value is not prime
-        assert_eq!(is_prime(i32::MIN, primes), false); // Minimum i32 value is not prime
+        assert_eq!(is_prime_list(i32::MAX, primes.clone()), false); // Maximum i32 value is not prime
+        assert_eq!(is_prime_list(i32::MIN, primes), false); // Minimum i32 value is not prime
     }
 
     #[test]
@@ -85,8 +82,8 @@ mod tests {
     fn is_prime_large_input_test() {
         // Test case for large input numbers
         let primes = generate_primes(1000);
-        assert_eq!(is_prime(997, primes.clone()), true); // 997 is prime
-        assert_eq!(is_prime(1001, primes), false); // 1001 is not prime
+        assert_eq!(is_prime_list(997, primes.clone()), true); // 997 is prime
+        assert_eq!(is_prime_list(1001, primes), false); // 1001 is not prime
     }
 
     #[test]

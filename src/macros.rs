@@ -15,7 +15,7 @@
 /// # Examples
 ///
 /// ```
-/// use is_prime::read;
+/// use bens_is_prime::read;
 /// read!(input_string as String);
 /// println!("Input: {}", input_string);
 /// ```

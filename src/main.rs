@@ -1,9 +1,12 @@
-use is_prime;
+use bens_is_prime;
 
 fn main() {
     println!("Enter an i32: ");
-    is_prime::read!(limit as i32);
-    let p: Vec<i32> = is_prime::generate_primes(limit);
-    println!("{:?}",p);
+    bens_is_prime::read!(n as i32);
+    if bens_is_prime::is_prime(n) {
+        println!("{} is a prime number", n);
+    }else{
+        println!("{} is not a prime number", n);
+    }
 }
 
