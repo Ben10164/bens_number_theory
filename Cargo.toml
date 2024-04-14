@@ -1,6 +1,6 @@
 [package]
 name = "bens_number_theory"
-version = "0.3.3"
+version = "0.3.4"
 edition = "2021"
 authors = ["Ben10164"]
 description = "A sample Rust project for number theory stuff (im using this to learn rust)"
