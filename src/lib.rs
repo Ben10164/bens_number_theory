@@ -1,7 +1,7 @@
 pub mod factorials;
 pub mod primes;
 
-/// Uses the Euclid-Euler theorem to calculate even perfect numbers
+/// Uses the Euclid-Euler theorem to calculate even perfect numbers.
 ///
 /// # Arguments
 ///
@@ -30,7 +30,7 @@ pub fn generate_even_perfect_numbers(n: i32) -> Vec<u32> {
     return nums;
 }
 
-/// Determines wether or not a given number is a "perfect number"
+/// Determines wether or not a given number is a "perfect number".
 ///
 /// `n` is a perfect number if the sum of all proper devisors of `n` results in `n`.
 ///
@@ -64,7 +64,7 @@ pub fn is_perfect_number(n: i32) -> bool {
     return false;
 }
 
-/// Generates a list containing the proper devisors of a given number
+/// Generates a list containing the proper devisors of a given number.
 ///
 /// # Arguments
 ///
@@ -94,4 +94,25 @@ pub fn divisors(n: i32) -> Vec<i32> {
     d.sort();
     d.dedup();
     return d;
+}
+
+#[cfg(test)]
+mod general_tests {
+    use super::*;
+
+    #[test]
+    fn divisors_test() {
+        assert_eq!(divisors(10), vec![1, 2, 5, 10]);
+        assert_eq!(divisors(20), vec![1, 2, 4, 5, 10, 20]);
+    }
+
+    #[test]
+    fn perfect_number_test() {
+        assert_eq!(is_perfect_number(6), true);
+        assert_eq!(is_perfect_number(7), false);
+        assert_eq!(is_perfect_number(28), true);
+        assert_eq!(is_perfect_number(29), false);
+        assert_eq!(is_perfect_number(8128), true);
+        assert_eq!(is_perfect_number(8130), false);
+    }
 }
