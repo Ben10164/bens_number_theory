@@ -1,4 +1,4 @@
-use bens_number_theory::{self, generate_even_perfect_numbers, primes::is_mersenne_prime};
+use bens_number_theory::{self, generate_even_perfect_numbers, is_mersenne_prime};
 
 fn main() {
     println!("Hello, world!");
