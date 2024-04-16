@@ -40,16 +40,18 @@ pub fn is_prime(n: i32) -> bool {
     return false;
 }
 
-/// Generates a list of prime numbers up to a given limit using the Sieve of Eratosthenes
-/// algorithm.
+/// Generates a list of prime numbers up to a given limit using the Sieve of Eratosthenes algorithm.
 ///
-/// Arguments
+/// # Arguments
 ///
 /// * `limit`
-///     * The `limit` parameter specifies the upper limit up to which you want to generate prime
-/// numbers.
+///     * The `limit` parameter specifies the upper limit up to which you want to generate prime numbers.
 ///     * The function `generate_primes` will generate all prime numbers up to this limit and return
 /// them as a vector.
+///
+/// # Returns
+///
+/// Vector of all prime numbers up to `limit`
 ///
 /// # Examples
 ///
@@ -75,10 +77,7 @@ pub fn generate_primes(limit: i32) -> Vec<i32> {
 /// Check if a given number is prime using an efficient method optimized for in-order generation.
 ///
 /// This function takes a number `n` and a vector of prime numbers `p`.
-/// It iterates through the prime numbers less than or equal to the square root of `n`,
-/// checking if any of them divide `n`. If `n` is divisible by any prime, it returns `false`,
-/// indicating that `n` is not prime. If none of the prime numbers divide `n`, it returns `true`,
-/// indicating that `n` is prime.
+/// It iterates through the prime numbers less than or equal to the square root of `n`, checking if any of them divide `n`. If `n` is divisible by any prime, it returns `false`, indicating that `n` is not prime. If none of the prime numbers divide `n`, it returns `true`, indicating that `n` is prime.
 ///
 /// # Arguments
 ///
@@ -130,7 +129,7 @@ fn is_prime_list(n: i32, p: Vec<i32>) -> bool {
 ///
 /// Arguments:
 ///
-/// * `m`: u128 to check if it is a prime.
+/// * `m` - u128 to check if it is a prime.
 ///
 /// Returns:
 ///
@@ -187,7 +186,7 @@ fn is_prime_lazy(n: u128) -> bool {
 ///
 /// Arguments:
 ///
-/// * `m`: u128 to check if it is a Mersenne prime.
+/// * `m` - u128 to check if it is a Mersenne prime.
 ///
 /// Returns:
 ///

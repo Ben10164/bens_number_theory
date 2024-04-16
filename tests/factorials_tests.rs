@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod factorial_tests {
-    use bens_number_theory::factorial::factorial;
+    use bens_number_theory::factorials::factorial;
 
     #[test]
     fn test_factorial() {
@@ -13,7 +13,7 @@ mod factorial_tests {
 
 #[cfg(test)]
 mod factorial_list_tests {
-    use bens_number_theory::factorial::factorial_list;
+    use bens_number_theory::factorials::factorial_list;
 
     #[test]
     fn test_factorial_list() {

@@ -11,7 +11,7 @@
 /// # Examples
 ///
 /// ```
-/// use bens_number_theory::factorial::factorial;
+/// use bens_number_theory::factorials::factorial;
 ///
 /// assert_eq!(factorial(0), 1);
 /// assert_eq!(factorial(1), 1);
@@ -27,21 +27,18 @@ pub fn factorial(n: u128) -> u128 {
 
 /// Generates a list of factorial values up to a given number `n`.
 ///
-/// Arguments:
+/// # Arguments:
 ///
-/// * `n`: `u128`, the number up to which we want to calculate the factorials.
-/// The function then returns a vector of type `Vec<u128>` containing the factorials of
-/// numbers from 1 to `n`
+/// * `n` - `u128`, the number up to which we want to calculate the factorials. The function then returns a vector of type `Vec<u128>` containing the factorials of numbers from 1 to `n`
 ///
-/// Returns:
+/// # Returns:
 ///
-/// Vector of `u128` values containing the factorial of numbers
-/// from 1 up to `n` (inclusive).
+/// Vector of `u128` values containing the factorial of numbers from 1 up to `n` (inclusive).
 ///
-/// Examples
+/// # Examples
 ///
 /// ```
-/// use bens_number_theory::factorial::factorial_list;
+/// use bens_number_theory::factorials::factorial_list;
 ///
 /// let factorials: Vec<u128> = factorial_list(10);
 /// assert_eq!(factorials, [1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800])
