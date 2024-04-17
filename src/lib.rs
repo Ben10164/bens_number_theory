@@ -113,7 +113,7 @@ pub fn divisors(n: i32) -> Vec<i32> {
 /// assert_eq!(factorial(5), 120);
 /// assert_eq!(factorial(10), 3628800);
 /// ```
-pub fn factorial(n: u128) -> u128 {
+pub fn factorial1(n: u128) -> u128 {
     match n {
         0 | 1 => 1,
         _ => (2..=n).product(),
@@ -142,7 +142,7 @@ pub fn factorial_list(n: u128) -> Vec<u128> {
     let mut f: Vec<u128> = vec![];
     let mut i: u128 = 1;
     while i <= n {
-        f.push(factorial(i));
+        f.push(factorial1(i));
         i += 1;
     }
     return f;
@@ -568,10 +568,10 @@ mod factorial_tests {
 
     #[test]
     fn test_factorial() {
-        assert_eq!(factorial(0), 1);
-        assert_eq!(factorial(1), 1);
-        assert_eq!(factorial(5), 120);
-        assert_eq!(factorial(10), 3628800);
+        assert_eq!(factorial1(0), 1);
+        assert_eq!(factorial1(1), 1);
+        assert_eq!(factorial1(5), 120);
+        assert_eq!(factorial1(10), 3628800);
     }
 }
 
