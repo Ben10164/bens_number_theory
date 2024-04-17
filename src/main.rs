@@ -1,4 +1,4 @@
-use num::BigUint;
+use num_bigint::BigUint;
 
 fn main() {
     println!("Hello, world!");
@@ -18,7 +18,7 @@ fn main() {
     // }
     // println!("{}", i);
     // println!("{}", factorial(BigUint::from_str("10").unwrap()));
-    println!("{}", factorial(BigUint::from(100_u32)));
+    println!("{}", factorial(BigUint::from(15_u32)));
 }
 
 // Reformat this to accept any type, but ALWAYS return bigint (custom type)

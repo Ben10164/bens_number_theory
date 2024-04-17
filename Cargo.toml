@@ -9,4 +9,4 @@ repository = "https://github.com/Ben10164/bens_number_theory"
 keywords = ["testing", "beginner", "number-theory"]
 
 [dependencies]
-num = "0.4.2"
+num-bigint = "0.4.4"

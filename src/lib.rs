@@ -1,3 +1,5 @@
+use num_bigint::BigUint;
+
 /// Uses the Euclid-Euler theorem to calculate even perfect numbers.
 ///
 /// # Arguments
@@ -6,7 +8,7 @@
 ///
 /// Returns
 ///
-/// Vec<u32> vector containing perfect numbers
+/// `Vec<u32>` vector containing perfect numbers
 ///
 /// # Examples
 ///
@@ -24,7 +26,7 @@ pub fn generate_even_perfect_numbers(n: i32) -> Vec<u32> {
             nums.push(2_u32.pow((prime - 1) as u32) * (2_u32.pow(prime as u32) - 1));
         }
     }
-    return nums;
+    nums
 }
 
 /// Determines wether or not a given number is a "perfect number".
@@ -52,13 +54,13 @@ pub fn is_perfect_number(n: i32) -> bool {
     let mut i: usize = 0;
     let mut sum: i32 = 0;
     while i < divisors.len() {
-        sum = sum + divisors[i];
-        i = i + 1;
+        sum += divisors[i];
+        i += 1;
     }
     if sum == n {
         return true;
     }
-    return false;
+    false
 }
 
 /// Generates a list containing the proper devisors of a given number.
@@ -86,14 +88,14 @@ pub fn divisors(n: i32) -> Vec<i32> {
             d.push(i);
             d.push(n / i);
         }
-        i = i + 1;
+        i += 1;
     }
     d.sort();
     d.dedup();
-    return d;
+    d
 }
 
-/// Calculate the factorial of a non-negative integer `n`.
+/// Calculate the factorial of a `BigUint` `n`.
 ///
 /// # Arguments
 ///
@@ -107,13 +109,41 @@ pub fn divisors(n: i32) -> Vec<i32> {
 ///
 /// ```
 /// use bens_number_theory::factorial;
+/// use num_bigint::BigUint;
+/// use std::str::FromStr;
 ///
-/// assert_eq!(factorial(0), 1);
-/// assert_eq!(factorial(1), 1);
-/// assert_eq!(factorial(5), 120);
-/// assert_eq!(factorial(10), 3628800);
+/// assert_eq!(factorial(BigUint::from(0_u32)), BigUint::from_str("1").unwrap());
+/// assert_eq!(factorial(BigUint::from(1_u32)), BigUint::from_str("1").unwrap());
+/// assert_eq!(factorial(BigUint::from(15_u32)), BigUint::from_str("1307674368000").unwrap());
 /// ```
-pub fn factorial1(n: u128) -> u128 {
+pub fn factorial(n: BigUint) -> BigUint {
+    match n {
+        n if n <= BigUint::from(1_u32) => BigUint::from(1_u32),
+        _ => n.clone() * factorial(n - BigUint::from(1_u32)),
+    }
+}
+
+/// Calculate the factorial of a `u128` `n`.
+///
+/// # Arguments
+///
+/// * `n` - The value of `n` in `n!`.
+///
+/// # Returns
+///
+/// `n!`
+///
+/// # Examples
+///
+/// ```
+/// use bens_number_theory::factorial_u128;
+///
+/// assert_eq!(factorial_u128(0), 1);
+/// assert_eq!(factorial_u128(1), 1);
+/// assert_eq!(factorial_u128(5), 120);
+/// assert_eq!(factorial_u128(10), 3628800);
+/// ```
+pub fn factorial_u128(n: u128) -> u128 {
     match n {
         0 | 1 => 1,
         _ => (2..=n).product(),
@@ -142,10 +172,10 @@ pub fn factorial_list(n: u128) -> Vec<u128> {
     let mut f: Vec<u128> = vec![];
     let mut i: u128 = 1;
     while i <= n {
-        f.push(factorial1(i));
+        f.push(factorial_u128(i));
         i += 1;
     }
-    return f;
+    f
 }
 
 /// Check if a given number is prime.
@@ -187,7 +217,7 @@ pub fn is_prime(n: i32) -> bool {
     }
     // due to Bertrand's postulate, this should never be reached
     // (if we are calculating sequentially)
-    return false;
+    false
 }
 
 /// Generates a list of prime numbers using the Sieve of Eratosthenes algorithm.
@@ -221,7 +251,7 @@ pub fn generate_primes(limit: i32) -> Vec<i32> {
         }
         n += 2;
     }
-    return p;
+    p
 }
 
 /// Check if a given number is prime using an efficient method optimized for in-order generation.
@@ -258,7 +288,7 @@ pub fn is_prime_list(n: i32, p: Vec<i32>) -> bool {
     }
     // due to Bertrand's postulate, this should never be reached
     // (if we are calculating sequentially)
-    return false;
+    false
 }
 
 /// Checks if a given u128 number is a prime.
@@ -288,7 +318,7 @@ pub fn is_prime_lazy(n: u128) -> bool {
         return true;
     }
     if n % 2 == 0 {
-        return false;
+        false
     } else {
         let mut i: u128 = 3;
         while i <= n / 2 {
@@ -297,7 +327,7 @@ pub fn is_prime_lazy(n: u128) -> bool {
             }
             i += 2;
         }
-        return true;
+        true
     }
 }
 
@@ -321,12 +351,10 @@ pub fn is_prime_lazy(n: u128) -> bool {
 /// assert_eq!(is_mersenne_prime((2_u128.pow(5)) - 1), true);
 /// ```
 pub fn is_mersenne_prime(m: u128) -> bool {
-    if is_prime_lazy(m) {
-        if is_prime_lazy((((m + 1) as u128).ilog2()) as u128) {
-            return true;
-        }
+    if is_prime_lazy(m) && is_prime_lazy(((m + 1).ilog2()) as u128) {
+        return true;
     }
-    return false;
+    false
 }
 
 #[cfg(test)]
@@ -568,10 +596,10 @@ mod factorial_tests {
 
     #[test]
     fn test_factorial() {
-        assert_eq!(factorial1(0), 1);
-        assert_eq!(factorial1(1), 1);
-        assert_eq!(factorial1(5), 120);
-        assert_eq!(factorial1(10), 3628800);
+        assert_eq!(factorial_u128(0), 1);
+        assert_eq!(factorial_u128(1), 1);
+        assert_eq!(factorial_u128(5), 120);
+        assert_eq!(factorial_u128(10), 3628800);
     }
 }
 
