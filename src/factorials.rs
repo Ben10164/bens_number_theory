@@ -1,4 +1,6 @@
-/// Calculate the factorial of a non-negative integer `n`.
+use num_bigint::BigUint;
+
+/// Calculate the factorial of a `BigUint` `n`.
 ///
 /// # Arguments
 ///
@@ -12,13 +14,41 @@
 ///
 /// ```
 /// use bens_number_theory::factorials::factorial;
+/// use num_bigint::BigUint;
+/// use std::str::FromStr;
 ///
-/// assert_eq!(factorial(0), 1);
-/// assert_eq!(factorial(1), 1);
-/// assert_eq!(factorial(5), 120);
-/// assert_eq!(factorial(10), 3628800);
+/// assert_eq!(factorial(BigUint::from(0_u32)), BigUint::from_str("1").unwrap());
+/// assert_eq!(factorial(BigUint::from(1_u32)), BigUint::from_str("1").unwrap());
+/// assert_eq!(factorial(BigUint::from(15_u32)), BigUint::from_str("1307674368000").unwrap());
 /// ```
-pub fn factorial(n: u128) -> u128 {
+pub fn factorial(n: BigUint) -> BigUint {
+    match n {
+        n if n <= BigUint::from(1_u32) => BigUint::from(1_u32),
+        _ => n.clone() * factorial(n - BigUint::from(1_u32)),
+    }
+}
+
+/// Calculate the factorial of a `u128` `n`.
+///
+/// # Arguments
+///
+/// * `n` - The value of `n` in `n!`.
+///
+/// # Returns
+///
+/// `n!`
+///
+/// # Examples
+///
+/// ```
+/// use bens_number_theory::factorials::factorial_u128;
+///
+/// assert_eq!(factorial_u128(0), 1);
+/// assert_eq!(factorial_u128(1), 1);
+/// assert_eq!(factorial_u128(5), 120);
+/// assert_eq!(factorial_u128(10), 3628800);
+/// ```
+pub fn factorial_u128(n: u128) -> u128 {
     match n {
         0 | 1 => 1,
         _ => (2..=n).product(),
@@ -47,8 +77,8 @@ pub fn factorial_list(n: u128) -> Vec<u128> {
     let mut f: Vec<u128> = vec![];
     let mut i: u128 = 1;
     while i <= n {
-        f.push(factorial(i));
+        f.push(factorial_u128(i));
         i += 1;
     }
-    return f;
+    f
 }

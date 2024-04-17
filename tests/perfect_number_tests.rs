@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod general_tests {
-    use bens_number_theory::*;
+    use bens_number_theory::perfect_numbers::{divisors, is_perfect_number};
 
     #[test]
     fn divisors_test() {

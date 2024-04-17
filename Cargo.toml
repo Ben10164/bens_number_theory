@@ -7,3 +7,6 @@ description = "A sample Rust project for number theory stuff (I'm using this to 
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/Ben10164/bens_number_theory"
 keywords = ["testing", "beginner", "number-theory"]
+
+[dependencies]
+num-bigint = "0.4.4"

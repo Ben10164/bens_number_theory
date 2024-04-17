@@ -1,4 +1,73 @@
 #[cfg(test)]
+mod is_prime_list_tests {
+    use bens_number_theory::primes::{generate_primes, is_prime_list};
+
+    #[test]
+    fn is_prime_large_test() {
+        // Test case for checking prime numbers up to a large limit
+        let primes: Vec<i32> = generate_primes(100);
+        assert_eq!(is_prime_list(97, primes.clone()), true); // 97 is prime
+        assert_eq!(is_prime_list(99, primes.clone()), false); // 99 is not prime
+        assert_eq!(is_prime_list(101, primes), true); // 101 is prime
+    }
+
+    #[test]
+    fn is_prime_negative_numbers_test() {
+        // Test case for negative numbers
+        let primes: Vec<i32> = vec![2, 3, 5, 7];
+        assert_eq!(is_prime_list(-7, primes.clone()), false); // -7 is not prime
+        assert_eq!(is_prime_list(-11, primes), false); // -11 is not prime
+    }
+
+    #[test]
+    fn is_prime_edge_case_test() {
+        // Test case for edge cases of prime number detection
+        let primes: Vec<i32> = vec![2, 3, 5, 7];
+        assert_eq!(is_prime_list(i32::MAX, primes.clone()), false); // Maximum i32 value is not prime
+        assert_eq!(is_prime_list(i32::MIN, primes), false); // Minimum i32 value is not prime
+    }
+
+    #[test]
+    fn is_prime_large_input_test() {
+        // Test case for large input numbers
+        let primes: Vec<i32> = generate_primes(1000);
+        assert_eq!(is_prime_list(997, primes.clone()), true); // 997 is prime
+        assert_eq!(is_prime_list(1001, primes), false); // 1001 is not prime
+    }
+}
+
+#[cfg(test)]
+mod is_prime_lazy_tests {
+    use bens_number_theory::primes::is_prime_lazy;
+
+    #[test]
+    fn test_prime_numbers() {
+        assert_eq!(is_prime_lazy(2), true);
+        assert_eq!(is_prime_lazy(3), true);
+        assert_eq!(is_prime_lazy(5), true);
+        assert_eq!(is_prime_lazy(7), true);
+        assert_eq!(is_prime_lazy(13), true);
+    }
+
+    #[test]
+    fn test_non_prime_numbers() {
+        assert_eq!(is_prime_lazy(1), false);
+        assert_eq!(is_prime_lazy(4), false);
+        assert_eq!(is_prime_lazy(6), false);
+        assert_eq!(is_prime_lazy(8), false);
+        assert_eq!(is_prime_lazy(10), false);
+        assert_eq!(is_prime_lazy(12), false);
+        assert_eq!(is_prime_lazy(14), false);
+    }
+
+    #[test]
+    fn test_large_prime_numbers() {
+        assert_eq!(is_prime_lazy(1_000_000_007), true); // A large prime number
+        assert_eq!(is_prime_lazy(1_000_000_009), true); // Another large prime number
+    }
+}
+
+#[cfg(test)]
 mod is_prime_tests {
     use bens_number_theory::primes::is_prime;
 
@@ -47,6 +116,7 @@ mod is_prime_tests {
     }
 }
 
+#[cfg(test)]
 mod generate_primes_tests {
     use bens_number_theory::primes::generate_primes;
 

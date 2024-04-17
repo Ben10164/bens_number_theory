@@ -1,13 +1,13 @@
 #[cfg(test)]
 mod factorial_tests {
-    use bens_number_theory::factorials::factorial;
+    use bens_number_theory::factorials::factorial_u128;
 
     #[test]
     fn test_factorial() {
-        assert_eq!(factorial(0), 1);
-        assert_eq!(factorial(1), 1);
-        assert_eq!(factorial(5), 120);
-        assert_eq!(factorial(10), 3628800);
+        assert_eq!(factorial_u128(0), 1);
+        assert_eq!(factorial_u128(1), 1);
+        assert_eq!(factorial_u128(5), 120);
+        assert_eq!(factorial_u128(10), 3628800);
     }
 }
 
