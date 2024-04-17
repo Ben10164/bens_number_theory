@@ -1,5 +1,5 @@
+use bens_number_theory::factorials::factorial;
 use num_bigint::BigUint;
-use bens_number_theory::factorial;
 
 fn main() {
     println!("Hello, world!");
