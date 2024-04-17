@@ -1,4 +1,5 @@
 use num_bigint::BigUint;
+use bens_number_theory::factorial;
 
 fn main() {
     println!("Hello, world!");
@@ -18,13 +19,5 @@ fn main() {
     // }
     // println!("{}", i);
     // println!("{}", factorial(BigUint::from_str("10").unwrap()));
-    println!("{}", factorial(BigUint::from(15_u32)));
-}
-
-// Reformat this to accept any type, but ALWAYS return bigint (custom type)
-pub fn factorial(n: BigUint) -> BigUint {
-    match n {
-        n if n == BigUint::from(1_u32) => BigUint::from(1_u32),
-        _ => n.clone() * factorial(n - BigUint::from(1_u32)),
-    }
+    println!("{}", factorial(BigUint::from(22222_u32)));
 }
