@@ -1,6 +1,6 @@
-use num_bigint::BigUint;
+use num_bigint::BigInt;
 
-/// Calculate the factorial of a `BigUint` `n`.
+/// Calculate the factorial of a `BigInt` `n`.
 ///
 /// # Arguments
 ///
@@ -14,17 +14,17 @@ use num_bigint::BigUint;
 ///
 /// ```
 /// use bens_number_theory::factorials::factorial;
-/// use num_bigint::BigUint;
+/// use num_bigint::BigInt;
 /// use std::str::FromStr;
 ///
-/// assert_eq!(factorial(BigUint::from(0_u32)), BigUint::from_str("1").unwrap());
-/// assert_eq!(factorial(BigUint::from(1_u32)), BigUint::from_str("1").unwrap());
-/// assert_eq!(factorial(BigUint::from(15_u32)), BigUint::from_str("1307674368000").unwrap());
+/// assert_eq!(factorial(BigInt::from(0_u32)), BigInt::from_str("1").unwrap());
+/// assert_eq!(factorial(BigInt::from(1_u32)), BigInt::from_str("1").unwrap());
+/// assert_eq!(factorial(BigInt::from(15_u32)), BigInt::from_str("1307674368000").unwrap());
 /// ```
-pub fn factorial(n: BigUint) -> BigUint {
+pub fn factorial(n: BigInt) -> BigInt {
     match n {
-        n if n <= BigUint::from(1_u32) => BigUint::from(1_u32),
-        _ => n.clone() * factorial(n - BigUint::from(1_u32)),
+        n if n <= BigInt::from(1_u32) => BigInt::from(1_u32),
+        _ => n.clone() * factorial(n - BigInt::from(1_u32)),
     }
 }
 

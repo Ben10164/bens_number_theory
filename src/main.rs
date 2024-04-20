@@ -1,6 +1,3 @@
-use bens_number_theory::factorials::factorial;
-use num_bigint::BigUint;
-
 fn main() {
     println!("Hello, world!");
     // let mut i: u32 = 2;
@@ -19,5 +16,7 @@ fn main() {
     // }
     // println!("{}", i);
     // println!("{}", factorial(BigUint::from_str("10").unwrap()));
-    println!("{}", factorial(BigUint::from(22222_u32)));
+    // println!("{}", factorial(BigUint::from(22222_u32)));
+    // println!("{}", calculate_pi(10).round(5));
+    // println!("{}", PI);
 }

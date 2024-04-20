@@ -1,6 +1,6 @@
 [package]
 name = "bens_number_theory"
-version = "0.3.8"
+version = "0.3.9"
 edition = "2021"
 authors = ["Ben10164"]
 description = "A sample Rust project for number theory stuff (I'm using this to learn Rust)"
@@ -8,5 +8,9 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/Ben10164/bens_number_theory"
 keywords = ["testing", "beginner", "number-theory"]
 
+[package.metadata.docs.rs]
+rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
+
 [dependencies]
+bigdecimal = "0.4.3"
 num-bigint = "0.4.4"
