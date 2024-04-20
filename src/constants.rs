@@ -1,6 +1,6 @@
 /// This will contain functions to calculate mathematical constants such as pi, e, etc.
 use bigdecimal::BigDecimal;
-use num_bigint::BigInt;
+use bigdecimal::num_bigint::BigInt;
 
 use crate::factorials::factorial;
 

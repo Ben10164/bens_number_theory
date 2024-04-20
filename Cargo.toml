@@ -1,6 +1,6 @@
 [package]
 name = "bens_number_theory"
-version = "0.3.10"
+version = "0.3.11"
 edition = "2021"
 authors = ["Ben10164"]
 description = "A sample Rust project for number theory stuff (I'm using this to learn Rust)"
@@ -13,4 +13,3 @@ rustdoc-args = [ "--html-in-header", "./src/docs-header.html" ]
 
 [dependencies]
 bigdecimal = "0.4.3"
-num-bigint = "0.4.4"
