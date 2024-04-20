@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod factorial_tests {
     use bens_number_theory::factorials::{factorial, factorial_u128};
-    use bigdecimal::num_bigint::BigInt;
+    use num::BigInt;
 
     #[test]
     fn test_factorial() {
