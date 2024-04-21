@@ -1,3 +1,4 @@
+use bens_number_theory::constants::calculate_pi;
 fn main() {
     println!("Hello, world!");
     // let mut i: u32 = 2;
@@ -17,6 +18,6 @@ fn main() {
     // println!("{}", i);
     // println!("{}", factorial(BigUint::from_str("10").unwrap()));
     // println!("{}", factorial(BigUint::from(22222_u32)));
-    // println!("{}", calculate_pi(10).round(5));
+    println!("{:#.6}", calculate_pi(100));
     // println!("{}", PI);
 }
