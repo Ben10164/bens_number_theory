@@ -1,5 +1,3 @@
-/// This will contain functions to calculate mathematical constants such as pi, e, etc.
-use bigdecimal::BigDecimal;
 use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
 
 use crate::factorials::factorial;
@@ -32,7 +30,7 @@ use crate::factorials::factorial;
 /// ```
 pub fn calculate_pi(n: u32) -> BigRational {
     // A
-    let a_root_two: BigRational = approx_sqrt(2, (10) as usize);
+    let a_root_two: BigRational = approx_sqrt(2, 10_usize);
     let a_two: BigRational = BigRational::from_integer(FromPrimitive::from_u64(2).unwrap());
     let a_denom: BigRational = BigRational::from_integer(FromPrimitive::from_u64(9801).unwrap());
     let a: BigRational = (a_two * a_root_two) / a_denom;
@@ -42,9 +40,9 @@ pub fn calculate_pi(n: u32) -> BigRational {
     while i < n {
         // B_n
         let b_top: BigRational =
-        BigRational::from(factorial(BigInt::from(4 * i)) * (1103 + 26390 * i));
+            BigRational::from(factorial(BigInt::from(4 * i)) * (1103 + 26390 * i));
         let b_bot: BigRational =
-        BigRational::from(BigInt::from(4_u32).pow(4 * i) * factorial(BigInt::from(i)).pow(4));
+            BigRational::from(BigInt::from(4_u32).pow(4 * i) * factorial(BigInt::from(i)).pow(4));
         let b_n: BigRational = b_top / b_bot;
 
         // C_n
@@ -63,8 +61,8 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
     let mut approx = start.clone();
 
     for _ in 0..iterations {
-        approx = (&approx + (&start / &approx)) /
-            Ratio::from_integer(FromPrimitive::from_u64(2).unwrap());
+        approx = (&approx + (&start / &approx))
+            / Ratio::from_integer(FromPrimitive::from_u64(2).unwrap());
     }
 
     approx
