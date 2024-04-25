@@ -1,7 +1,7 @@
 use crate::factorials::factorial;
 use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
 
-/// Calculate the value of $\pi$ using the *Ramanujan–Sato series*
+/// Calculate a ratio representing the value of $\pi$ using the *Ramanujan–Sato series*
 ///
 /// $$\frac{1}{\pi} = \frac{2\sqrt{2}}{9801}\sum_{n = 0}^{\infty}\frac{(4n)!(1103 + 26390n)}{4^{4n}(n!)^{4}99^{4n}}$$
 /// $$\frac{1}{\pi} =  A\sum_{n = 0}^{\infty}B_{n}C_{n}$$
@@ -16,7 +16,7 @@ use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
 ///
 /// # Returns
 ///
-/// A BigDecimal representing $\pi$.
+/// A BigRational representing $\pi$.
 ///
 /// # Examples
 ///
