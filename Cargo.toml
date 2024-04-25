@@ -1,10 +1,10 @@
 [package]
 name = "bens_number_theory"
-version = "0.3.11"
+version = "0.3.12"
 edition = "2021"
 authors = ["Ben10164"]
 description = "A sample Rust project for number theory stuff (I'm using this to learn Rust)"
-license = "MIT OR Apache-2.0"
+license = "Apache-2.0"
 repository = "https://github.com/Ben10164/bens_number_theory"
 keywords = ["testing", "beginner", "number-theory"]
 
