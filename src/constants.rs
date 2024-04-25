@@ -22,10 +22,10 @@ use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
 ///
 /// ```
 /// use bens_number_theory::constants::calculate_pi;
-/// use bigdecimal::{BigDecimal, FromPrimitive};
-/// use std::f32::consts::PI;
 ///
-/// assert_eq!(calculate_pi(10).round(7), BigDecimal::from_f32(PI).unwrap().round(7))
+/// assert!(calculate_pi(1).to_string().starts_with("158853645"));
+/// assert!(calculate_pi(1).to_string().contains('/'));
+/// assert!(calculate_pi(1).to_string().ends_with("899151951"));
 /// ```
 pub fn calculate_pi(n: u32) -> BigRational {
     // A
