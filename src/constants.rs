@@ -55,7 +55,7 @@ pub fn estimate_pi_ratio(n: u32) -> BigRational {
     (a * sum).recip()
 }
 
-/// Function taken from the num crate documentation
+/// Function taken from the num-crate documentation
 /// Uses Newton’s method to approximate a square root to arbitrary precision
 fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
     let start: Ratio<BigInt> = Ratio::from_integer(FromPrimitive::from_u64(number).unwrap());
