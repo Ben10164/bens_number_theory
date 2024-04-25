@@ -21,13 +21,13 @@ use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
 /// # Examples
 ///
 /// ```
-/// use bens_number_theory::constants::calculate_pi;
+/// use bens_number_theory::constants::estimate_pi_ratio;
 ///
-/// assert!(calculate_pi(1).to_string().starts_with("158853645"));
-/// assert!(calculate_pi(1).to_string().contains('/'));
-/// assert!(calculate_pi(1).to_string().ends_with("899151951"));
+/// assert!(estimate_pi_ratio(1).to_string().starts_with("158853645"));
+/// assert!(estimate_pi_ratio(1).to_string().contains('/'));
+/// assert!(estimate_pi_ratio(1).to_string().ends_with("899151951"));
 /// ```
-pub fn calculate_pi(n: u32) -> BigRational {
+pub fn estimate_pi_ratio(n: u32) -> BigRational {
     // A
     let a_root_two: BigRational = approx_sqrt(2, 10_usize);
     let a_two: BigRational = BigRational::from_integer(FromPrimitive::from_u64(2).unwrap());

@@ -1,4 +1,4 @@
-use bens_number_theory::constants::calculate_pi;
+use bens_number_theory::constants::estimate_pi_ratio;
 use num::{BigRational, FromPrimitive};
 use std::f64::consts::PI;
 
@@ -21,15 +21,15 @@ fn main() {
     // println!("{}", i);
     // println!("{}", factorial(BigUint::from_str("10").unwrap()));
     // println!("{}", factorial(BigUint::from(22222_u32)));
-    println!("{}", calculate_pi(1));
+    println!("{}", estimate_pi_ratio(1));
     println!("{}", BigRational::from_f64(PI).unwrap());
-    println!("{:?}", calculate_pi(1).to_string().starts_with("158853645"));
-    println!("{:?}", calculate_pi(1).to_string().contains('/'));
-    println!("{:?}", calculate_pi(1).to_string().ends_with("899151951"));
+    println!("{:?}", estimate_pi_ratio(1).to_string().starts_with("158853645"));
+    println!("{:?}", estimate_pi_ratio(1).to_string().contains('/'));
+    println!("{:?}", estimate_pi_ratio(1).to_string().ends_with("899151951"));
 
-assert!(calculate_pi(1).to_string().starts_with("158853645"));
-assert!(calculate_pi(1).to_string().contains('/'));
-assert!(calculate_pi(1).to_string().ends_with("899151951"));
+assert!(estimate_pi_ratio(1).to_string().starts_with("158853645"));
+assert!(estimate_pi_ratio(1).to_string().contains('/'));
+assert!(estimate_pi_ratio(1).to_string().ends_with("899151951"));
 
     // println!("{}", PI);
 }
