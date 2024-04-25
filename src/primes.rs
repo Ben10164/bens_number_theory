@@ -154,7 +154,7 @@ pub fn is_prime_lazy(n: u128) -> bool {
 /// Checks if a given number is a Mersenne prime.
 ///
 /// A Mersenne prime is defined as $\forall p \in \mathbb{N}$, if $p$ is prime, then $2^p - 1$ is also prime.
-/// 
+///
 /// Arguments:
 ///
 /// * `m` - u128 to check if it is a Mersenne prime.

@@ -1,4 +1,4 @@
-use bigdecimal::num_bigint::BigInt;
+use num::BigInt;
 
 /// Calculate the factorial of a `BigInt` `n`.
 ///
@@ -14,7 +14,7 @@ use bigdecimal::num_bigint::BigInt;
 ///
 /// ```
 /// use bens_number_theory::factorials::factorial;
-/// use bigdecimal::num_bigint::BigInt;
+/// use num::BigInt;
 /// use std::str::FromStr;
 ///
 /// assert_eq!(factorial(BigInt::from(0_u32)), BigInt::from_str("1").unwrap());
