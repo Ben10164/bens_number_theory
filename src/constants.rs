@@ -1,5 +1,10 @@
 use crate::factorials::factorial;
-use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
+use num::{
+    bigint::{self, ToBigInt},
+    cast::AsPrimitive,
+    rational::Ratio,
+    BigInt, BigRational, FromPrimitive,
+};
 
 /// Calculate a ratio representing the value of $\pi$ using the *Ramanujan–Sato series*
 ///
@@ -67,4 +72,54 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
     }
 
     approx
+}
+
+/// Uses the theorem that the ratio for two sequential Fibinacci-like indecies
+/// will converge to the golden ratio
+/// This specfically uses the Lucas Sequence
+pub fn golden_ratio(n: BigInt) -> Ratio<BigInt> {
+    if n < BigInt::from(2) {
+        return BigRational::from_i32(0_i32).unwrap();
+    }
+    let mut lucas: Vec<BigInt> = lucas_sequence(n);
+    let numerator: Ratio<BigInt> = BigRational::from(lucas.pop().unwrap());
+    let demom: Ratio<BigInt> = BigRational::from(lucas.pop().unwrap());
+    return numerator / demom;
+}
+
+/// Calculates a vector of numbers representing the Lucas Sequence.
+///
+/// The Lucas Sequence is defined as:
+/// $$L_n :=\begin{cases}
+///     2                   & \text{if } n = 0; \\\\
+///     1                   & \text{if } n = 1; \\\\
+///     L_{n-1} + L_{n-2}   & \text{if } n > 1.
+/// \end{cases}$$
+///
+/// $\text{Lucas numbers can also be expressed as the sum of adjacent Fibonacci numbers:}$
+///
+/// $L_n = \varphi^n + (-1)^n \varphi^{-n} \text{, where } \varphi = \frac{1 + \sqrt{5}}{2} \text{ is the golden ratio.}$
+///
+/// # Arguments
+///
+/// `n` - The size of the list to return
+pub fn lucas_sequence(n: BigInt) -> Vec<BigInt> {
+    match n {
+        _ if n == BigInt::from(0) => vec![],
+        _ if n == BigInt::from(1) => vec![BigInt::from(2)],
+        _ => generate_lucas_sequence(n),
+    }
+}
+
+/// Private function that does the logic to generate the lucas sequence used by `lucas_sequence() -> Vec<t>`
+fn generate_lucas_sequence(n: BigInt) -> Vec<BigInt> {
+    let mut p: Vec<BigInt> = vec![BigInt::from(2), BigInt::from(1)];
+    let mut i: BigInt = BigInt::from(2);
+    while i < n {
+        let last_two: &[BigInt; 2] = p.last_chunk().unwrap();
+        let new: BigInt = last_two.get(0).unwrap() + last_two.get(1).unwrap();
+        p.push(new);
+        i += 1;
+    }
+    p
 }
