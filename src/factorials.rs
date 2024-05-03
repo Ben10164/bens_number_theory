@@ -23,8 +23,9 @@ use num::BigInt;
 /// ```
 pub fn factorial(n: BigInt) -> BigInt {
     match n {
-        n if n <= BigInt::from(1_u32) => BigInt::from(1_u32),
-        _ => n.clone() * factorial(n - BigInt::from(1_u32)),
+        // n if n <= BigInt::from(1_u32) => BigInt::from(1_u32),
+        i if i <= BigInt::from(1_u8) => BigInt::from(1_u8),
+        _ => n.clone() * factorial(n - BigInt::from(1_u8)),
     }
 }
 
