@@ -1,5 +1,4 @@
-use bens_number_theory::constants::{golden_ratio, lucas_sequence};
-use bens_number_theory::factorials::*;
+use bens_number_theory::constants::golden_ratio;
 use num::BigInt;
 
 fn main() {
