@@ -4,7 +4,7 @@ use super::primes::{generate_primes, is_prime};
 ///
 /// # Arguments
 ///
-/// * `n` - The max value for p in the formula (2^{p-1})(2^p-1)
+/// * `n` - The max value for p in the formula $(2^{p-1})(2^p-1)$
 ///
 /// Returns
 ///
