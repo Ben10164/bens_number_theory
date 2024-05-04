@@ -71,9 +71,9 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
 /// 
 /// $$\varphi = 1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \ddots}}}.$$
 ///
-/// Note: This Function specfically uses the Lucas Sequence.
+/// Note: This Function specifically uses the Lucas Sequence.
 ///
-/// Let $S$ be a fibinacci-like sequence of size $n$. 
+/// Let $S$ be a Fibonacci-like sequence of size $n$. 
 /// $$\lim_{n\to\infty} (S[n] / S[n-1]) = \varphi$$
 /// 
 /// *Binet's formula states that the ratio for two sequential 
