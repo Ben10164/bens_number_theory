@@ -68,76 +68,76 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
 }
 
 /// Uses the Binet's formula to estimate the golden ratio.
-/// 
+///
 /// $$\varphi = 1 + \cfrac{1}{1 + \cfrac{1}{1 + \cfrac{1}{1 + \ddots}}}.$$
 ///
 /// Note: This Function specifically uses the Lucas Sequence.
 ///
-/// Let $S$ be a Fibonacci-like sequence of size $n$. 
+/// Let $S$ be a Fibonacci-like sequence of size $n$.
 /// $$\lim_{n\to\infty} (S[n] / S[n-1]) = \varphi$$
-/// 
-/// *Binet's formula states that the ratio for two sequential 
+///
+/// *Binet's formula states that the ratio for two sequential
 /// Fibonacci-like indices will converge to the golden ratio.*
-/// 
+///
 /// ## Closed-form Expression of Binet's formula
-/// 
+///
 /// The following is adapted from [this](https://doi.org/10.1007/978-3-322-85165-9_6) book and [Wikipedia](https://en.wikipedia.org/wiki/Fibonacci_sequence#Closed-form_expression).
-/// 
+///
 /// $$F_n = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},$$
-/// 
+///
 /// where
-/// 
+///
 /// $$\varphi = \frac{1 + \sqrt{5}}{2} \approx 1.6180339887...$$
-/// 
+///
 /// is the golden ratio, and $\Psi$ is its conjugate:
-/// 
+///
 /// $$\psi = \frac{1 - \sqrt{5}}{2} = 1- \varphi = -\frac{1}{\varphi} \approx -0.6180339887$$
-/// 
+///
 /// Since $\psi = -\varphi^{-1}$, this formula can also be written as
-/// 
+///
 /// $$F_n = \frac{\varphi^n - (-\varphi)^{-n}}{\sqrt{5}} = \frac{\varphi^n - (-\varphi)^{-n}}{2\varphi-1}.$$
-/// 
+///
 /// Also note that both $\varphi$ and $\psi$ are solutions to the equation $x^2 = x + 1$, and thus $x^n = x^{n-1} + x^{n-2}$.  
 /// Using this relation, we know that the powers of $\varphi$ and $\psi$ satisfy the Fibonacci recursion.
-/// 
+///
 /// $$\varphi^n = \varphi^{n-1} + \varphi^{n-2}, \\\\
 /// \psi^n = \psi^{n-1} + \psi^{n-2}.$$
-/// 
+///
 /// Therefor, for any values $a$ and $b$, the sequence defined by
-/// 
+///
 /// $$U_n = a\varphi^n + b\psi^n$$
-/// 
+///
 /// satisfies the same recurrence,
-/// 
+///
 /// $$U_n = a\varphi^n + b\psi^n \\\\
 /// U_n = a(\varphi^{n-1} + \varphi^{n-2}) + b(\psi^{n-1} + \psi^{n-2}) \\\\
 /// U_n = a\varphi^{n-1} + b\psi^{n-1} + a\varphi^{n-2}  + b\psi^{n-2} \\\\
 /// U_n = U_{n-1} + U_{n-2}$$
-/// 
+///
 /// If $a$ and $b$ are chosen so that $U_0 = 0$ and $U_1 = 1$, then the resulting sequence $U_n$ must be the Fibonacci sequence.  
 /// This is the same as requiring $a$ and $b$ satisfy the system of equations:
-/// 
+///
 /// $$\begin{cases}
 ///     a+b = 0 \\\\
 ///     \varphi a + \psi b = 1
 /// \end{cases}$$
-/// 
+///
 /// which has solution
-/// 
+///
 /// $$a = \frac{1}{\varphi - \psi} = \frac{1}{\sqrt{5}}, b = -a$$
-/// 
+///
 /// producing the required formula.
-/// 
+///
 /// Taking the starting values of $U_0$ and $U_1$ to be arbitrary constants, the general solution is then described as:
-/// 
+///
 /// $$U_n = a\varphi^n + b\psi^n$$
-/// 
-/// where 
-/// 
+///
+/// where
+///
 /// $$a = \frac{U_1 - U_0 \psi}{\sqrt{5}} \\\\
 /// b = \frac{U_0\varphi - U_1}{\sqrt{5}}$$
-/// 
-/// 
+///
+///
 pub fn golden_ratio(n: BigInt) -> Ratio<BigInt> {
     if n < BigInt::from(2) {
         return BigRational::from_i32(0_i32).unwrap();
