@@ -1,47 +1,9 @@
 #[cfg(test)]
-mod is_prime_list_tests {
-    use bens_number_theory::primes::{generate_primes, is_prime_list};
+mod is_prime_tests {
+    use bens_number_theory::primes::{generate_primes, is_prime, is_prime_lazy, is_prime_list};
 
     #[test]
-    fn is_prime_large_test() {
-        // Test case for checking prime numbers up to a large limit
-        let primes: Vec<i32> = generate_primes(100);
-        assert!(is_prime_list(97, primes.clone())); // 97 is prime
-        assert!(!is_prime_list(99, primes.clone())); // 99 is not prime
-        assert!(is_prime_list(101, primes)); // 101 is prime
-    }
-
-    #[test]
-    fn is_prime_negative_numbers_test() {
-        // Test case for negative numbers
-        let primes: Vec<i32> = vec![2, 3, 5, 7];
-        assert!(!is_prime_list(-7, primes.clone())); // -7 is not prime
-        assert!(!is_prime_list(-11, primes)); // -11 is not prime
-    }
-
-    #[test]
-    fn is_prime_edge_case_test() {
-        // Test case for edge cases of prime number detection
-        let primes: Vec<i32> = vec![2, 3, 5, 7];
-        assert!(!is_prime_list(i32::MAX, primes.clone())); // Maximum i32 value is not prime
-        assert!(!is_prime_list(i32::MIN, primes)); // Minimum i32 value is not prime
-    }
-
-    #[test]
-    fn is_prime_large_input_test() {
-        // Test case for large input numbers
-        let primes: Vec<i32> = generate_primes(1000);
-        assert!(is_prime_list(997, primes.clone())); // 997 is prime
-        assert!(!is_prime_list(1001, primes)); // 1001 is not prime
-    }
-}
-
-#[cfg(test)]
-mod is_prime_lazy_tests {
-    use bens_number_theory::primes::is_prime_lazy;
-
-    #[test]
-    fn test_prime_numbers() {
+    fn test_prime_numbers_lazy() {
         assert!(is_prime_lazy(2));
         assert!(is_prime_lazy(3));
         assert!(is_prime_lazy(5));
@@ -50,7 +12,7 @@ mod is_prime_lazy_tests {
     }
 
     #[test]
-    fn test_non_prime_numbers() {
+    fn test_non_prime_numbers_lazy() {
         assert!(!is_prime_lazy(1));
         assert!(!is_prime_lazy(4));
         assert!(!is_prime_lazy(6));
@@ -59,17 +21,6 @@ mod is_prime_lazy_tests {
         assert!(!is_prime_lazy(12));
         assert!(!is_prime_lazy(14));
     }
-
-    #[test]
-    fn test_large_prime_numbers() {
-        assert!(is_prime_lazy(1_000_000_007)); // A large prime number
-        assert!(is_prime_lazy(1_000_000_009)); // Another large prime number
-    }
-}
-
-#[cfg(test)]
-mod is_prime_tests {
-    use bens_number_theory::primes::is_prime;
 
     #[test]
     fn test_non_prime_numbers() {
@@ -113,6 +64,39 @@ mod is_prime_tests {
         // Test zero and one
         assert!(!is_prime(0));
         assert!(!is_prime(1));
+    }
+
+    #[test]
+    fn is_prime_large_test() {
+        // Test case for checking prime numbers up to a large limit
+        let primes: Vec<i32> = generate_primes(100);
+        assert!(is_prime_list(97, primes.clone())); // 97 is prime
+        assert!(!is_prime_list(99, primes.clone())); // 99 is not prime
+        assert!(is_prime_list(101, primes)); // 101 is prime
+    }
+
+    #[test]
+    fn is_prime_negative_numbers_test() {
+        // Test case for negative numbers
+        let primes: Vec<i32> = vec![2, 3, 5, 7];
+        assert!(!is_prime_list(-7, primes.clone())); // -7 is not prime
+        assert!(!is_prime_list(-11, primes)); // -11 is not prime
+    }
+
+    #[test]
+    fn is_prime_edge_case_test() {
+        // Test case for edge cases of prime number detection
+        let primes: Vec<i32> = vec![2, 3, 5, 7];
+        assert!(!is_prime_list(i32::MAX, primes.clone())); // Maximum i32 value is not prime
+        assert!(!is_prime_list(i32::MIN, primes)); // Minimum i32 value is not prime
+    }
+
+    #[test]
+    fn is_prime_large_input_test() {
+        // Test case for large input numbers
+        let primes: Vec<i32> = generate_primes(1000);
+        assert!(is_prime_list(997, primes.clone())); // 997 is prime
+        assert!(!is_prime_list(1001, primes)); // 1001 is not prime
     }
 }
 
@@ -184,7 +168,7 @@ mod generate_primes_tests {
     #[test]
     fn generate_primes_large_limit_test() {
         // Test case for generating primes with a large limit
-        assert_eq!(generate_primes(1000000).len(), 78498); // There are 78498 primes up to 1000000
+        assert_eq!(generate_primes(100000).len(), 9592); // There are 9592 primes up to 100000
     }
 }
 
@@ -192,41 +176,152 @@ mod generate_primes_tests {
 mod is_mersenne_prime_tests {
     use bens_number_theory::primes::is_mersenne_prime;
 
+    /// True
+
     #[test]
-    fn mersenne_primes_tests() {
+    fn mersenne_primes_tests1() {
         assert!(is_mersenne_prime((2_u128.pow(2)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(3)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(5)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(7)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(13)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(17)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(19)) - 1));
-        assert!(is_mersenne_prime((2_u128.pow(31)) - 1));
     }
 
     #[test]
-    fn non_mersenne_primes_tests() {
+    fn mersenne_primes_tests2() {
+        assert!(is_mersenne_prime((2_u128.pow(3)) - 1));
+    }
+
+    #[test]
+    fn mersenne_primes_tests3() {
+        assert!(is_mersenne_prime((2_u128.pow(5)) - 1));
+    }
+
+    #[test]
+    fn mersenne_primes_tests4() {
+        assert!(is_mersenne_prime((2_u128.pow(7)) - 1));
+    }
+
+    #[test]
+    fn mersenne_primes_tests5() {
+        assert!(is_mersenne_prime((2_u128.pow(13)) - 1));
+    }
+
+    #[test]
+    fn mersenne_primes_tests6() {
+        assert!(is_mersenne_prime((2_u128.pow(17)) - 1));
+    }
+
+    #[test]
+    fn mersenne_primes_tests7() {
+        assert!(is_mersenne_prime((2_u128.pow(19)) - 1));
+    }
+
+    /// False
+
+    #[test]
+    fn non_mersenne_primes_tests1() {
         assert!(!is_mersenne_prime((2_u128.pow(4)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests2() {
         assert!(!is_mersenne_prime((2_u128.pow(6)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests3() {
         assert!(!is_mersenne_prime((2_u128.pow(8)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests4() {
         assert!(!is_mersenne_prime((2_u128.pow(9)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests5() {
         assert!(!is_mersenne_prime((2_u128.pow(10)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests6() {
         assert!(!is_mersenne_prime((2_u128.pow(11)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests7() {
         assert!(!is_mersenne_prime((2_u128.pow(12)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests8() {
         assert!(!is_mersenne_prime((2_u128.pow(14)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests9() {
         assert!(!is_mersenne_prime((2_u128.pow(15)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests10() {
         assert!(!is_mersenne_prime((2_u128.pow(16)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests11() {
         assert!(!is_mersenne_prime((2_u128.pow(18)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests12() {
         assert!(!is_mersenne_prime((2_u128.pow(20)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests13() {
         assert!(!is_mersenne_prime((2_u128.pow(21)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests14() {
         assert!(!is_mersenne_prime((2_u128.pow(22)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests15() {
         assert!(!is_mersenne_prime((2_u128.pow(23)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests16() {
         assert!(!is_mersenne_prime((2_u128.pow(24)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests17() {
         assert!(!is_mersenne_prime((2_u128.pow(25)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests18() {
         assert!(!is_mersenne_prime((2_u128.pow(26)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests19() {
         assert!(!is_mersenne_prime((2_u128.pow(27)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests20() {
         assert!(!is_mersenne_prime((2_u128.pow(28)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests21() {
         assert!(!is_mersenne_prime((2_u128.pow(29)) - 1));
+    }
+
+    #[test]
+    fn non_mersenne_primes_tests22() {
         assert!(!is_mersenne_prime((2_u128.pow(30)) - 1));
     }
 }

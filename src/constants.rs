@@ -56,6 +56,24 @@ pub fn estimate_pi_ratio(n: u32) -> BigRational {
 
 /// Function taken from the num-crate documentation
 /// Uses Newton’s method to approximate a square root to arbitrary precision
+///
+/// # Example
+///
+/// ```
+/// use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
+/// fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
+///     let start: Ratio<BigInt> = Ratio::from_integer(FromPrimitive::from_u64(number).unwrap());
+///     let mut approx = start.clone();
+///     
+///     for _ in 0..iterations {
+///         approx = (&approx + (&start / &approx))
+///             / Ratio::from_integer(FromPrimitive::from_u64(2).unwrap());
+///     }
+///     approx
+/// }
+///
+/// println!("{}", approx_sqrt(100_u64, 10_usize));
+/// ```
 fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
     let start: Ratio<BigInt> = Ratio::from_integer(FromPrimitive::from_u64(number).unwrap());
     let mut approx = start.clone();
@@ -74,7 +92,7 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
 /// Note: This Function specifically uses the Lucas Sequence.
 ///
 /// Let $S$ be a Fibonacci-like sequence of size $n$.
-/// $$\lim_{n\to\infty} (S[n] / S[n-1]) = \varphi$$
+/// $$\lim_{n\to\infty} (S\[n\] / S\[n-1\]) = \varphi$$
 ///
 /// *Binet's formula states that the ratio for two sequential
 /// Fibonacci-like indices will converge to the golden ratio.*
@@ -137,50 +155,20 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
 /// $$a = \frac{U_1 - U_0 \psi}{\sqrt{5}} \\\\
 /// b = \frac{U_0\varphi - U_1}{\sqrt{5}}$$
 ///
+/// # Example
 ///
+/// ```
+/// use num::BigInt;
+/// use bens_number_theory::constants::golden_ratio;
+///
+/// println!("{}", golden_ratio(BigInt::from(10)));
+/// ```
 pub fn golden_ratio(n: BigInt) -> Ratio<BigInt> {
     if n < BigInt::from(2) {
         return BigRational::from_i32(0_i32).unwrap();
     }
-    let mut lucas: Vec<BigInt> = lucas_sequence(n);
+    let mut lucas: Vec<BigInt> = crate::sequences::lucas_sequence(n);
     let numerator: Ratio<BigInt> = BigRational::from(lucas.pop().unwrap());
     let demom: Ratio<BigInt> = BigRational::from(lucas.pop().unwrap());
     numerator / demom
-}
-
-/// Calculates a vector of numbers representing the Lucas Sequence.
-///
-/// The Lucas Sequence is defined as:
-/// $$L_n :=\begin{cases}
-///     2                   & \text{if } n = 0; \\\\
-///     1                   & \text{if } n = 1; \\\\
-///     L_{n-1} + L_{n-2}   & \text{if } n > 1.
-/// \end{cases}$$
-///
-/// $\text{Lucas numbers can also be expressed as the sum of adjacent Fibonacci numbers:}$
-///
-/// $L_n = \varphi^n + (-1)^n \varphi^{-n} \text{, where } \varphi = \frac{1 + \sqrt{5}}{2} \text{ is the golden ratio.}$
-///
-/// # Arguments
-///
-/// `n` - The size of the list to return
-pub fn lucas_sequence(n: BigInt) -> Vec<BigInt> {
-    match n {
-        _ if n == BigInt::from(0) => vec![],
-        _ if n == BigInt::from(1) => vec![BigInt::from(2)],
-        _ => generate_lucas_sequence(n),
-    }
-}
-
-/// Private function that does the logic to generate the lucas sequence used by `lucas_sequence() -> Vec<t>`
-fn generate_lucas_sequence(n: BigInt) -> Vec<BigInt> {
-    let mut p: Vec<BigInt> = vec![BigInt::from(2), BigInt::from(1)];
-    let mut i: BigInt = BigInt::from(2);
-    while i < n {
-        let last_two: &[BigInt; 2] = p.last_chunk().unwrap();
-        let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
-        p.push(new);
-        i += 1;
-    }
-    p
 }
