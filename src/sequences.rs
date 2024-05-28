@@ -58,7 +58,7 @@ pub fn lucas_sequence(n: BigInt) -> Vec<BigInt> {
 ///
 /// ```
 /// use num::BigInt;
-/// 
+///
 /// fn generate_lucas_sequence(n: BigInt) -> Vec<BigInt> {
 ///     let mut p: Vec<BigInt> = vec![BigInt::from(2), BigInt::from(1)];
 ///     let mut i: BigInt = BigInt::from(2);
@@ -94,6 +94,8 @@ fn generate_lucas_sequence(n: BigInt) -> Vec<BigInt> {
 /// This function calculates a sequence of dying rabbits based on the number `n`, where each
 /// element in the sequence depends on the previous ones. The sequence starts from the 13th
 /// element, as it assumes that `n` is greater than or equal to 12.
+///
+/// [A000044](https://oeis.org/A000044)
 ///
 /// The Dying Rabbit Sequence is defined as:  
 /// $$R_n :=\begin{cases}
@@ -152,14 +154,14 @@ pub fn dying_rabbits_sequence(n: BigInt) -> Vec<BigInt> {
 /// ```
 /// use num::BigInt;
 /// use bens_number_theory::sequences::fibonacci_sequence;
-/// 
+///
 /// fn dying_rec(nums: &[BigInt]) -> BigInt {
 ///     let last_13: &[BigInt; 13] = nums.last_chunk().unwrap();
 ///     let new: BigInt =
 ///         (last_13.get(12).unwrap() + last_13.get(11).unwrap()) - last_13.first().unwrap();
 ///     new
 /// }
-/// 
+///
 /// fn decide_dying_rabbit(i: BigInt, nums: &[BigInt]) -> BigInt {
 ///     match i {
 ///         _ if i == BigInt::from(0) => BigInt::from(1),
@@ -203,7 +205,7 @@ fn decide_dying_rabbit(i: BigInt, nums: &[BigInt]) -> BigInt {
 ///
 /// ```
 /// use num::BigInt;
-/// 
+///
 /// fn dying_rec(nums: &[BigInt]) -> BigInt {
 ///     let last_13: &[BigInt; 13] = nums.last_chunk().unwrap();
 ///     let new: BigInt =
@@ -285,7 +287,7 @@ pub fn fibonacci_sequence(n: BigInt) -> Vec<BigInt> {
 ///
 /// ```
 /// use num::BigInt;
-/// 
+///
 /// fn fib_rec(nums: &[BigInt]) -> BigInt {
 ///     let last_two: &[BigInt; 2] = nums.last_chunk().unwrap();
 ///     let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
@@ -300,4 +302,66 @@ fn fib_rec(nums: &[BigInt]) -> BigInt {
     let last_two: &[BigInt; 2] = nums.last_chunk().unwrap();
     let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
     new
+}
+
+pub fn fib_rec_custom(nums: &[BigInt], num: usize) -> BigInt {
+    let start_index: usize = nums.len().saturating_sub(num); // Start index for the last `num` elements
+    let last_few: &[BigInt] = &nums[start_index..]; // Slice containing the last `num` elements
+    let mut total: BigInt = BigInt::from(0);
+    for val in last_few {
+        total += val;
+    }
+    total
+}
+
+/// Calculates a vector of numbers representing the Ben Sequence (I made this up).
+///
+/// The Ben Sequence is defined as:  
+/// $$B_n :=\begin{cases}
+///     1                   & \text{if } n = 0; \\\\
+///     0                   & \text{if } n = 1; \\\\
+///     1                   & \text{if } n = 2; \\\\
+///     6                   & \text{if } n = 3; \\\\
+///     4                   & \text{if } n = 4; \\\\
+///     B_{n-1} + B_{n-2}   & \text{if } n > 5.
+/// \end{cases}$$
+///
+/// # Arguments
+///
+/// `n` - The size of the list to return
+///
+/// # Returns
+///
+/// A vector containing the Fibonacci Sequence of length `n`
+///
+/// # Example
+///
+/// ```
+/// use num::BigInt;
+/// use bens_number_theory::sequences::ben_sequence;
+///
+/// let sequence = ben_sequence(BigInt::from(7));
+/// assert_eq!(sequence, [BigInt::from(1),
+///     BigInt::from(0), BigInt::from(1),
+///     BigInt::from(6), BigInt::from(4),BigInt::from(10), BigInt::from(14)]
+/// );
+/// ```
+pub fn ben_sequence(n: BigInt) -> Vec<BigInt> {
+    let mut i: BigInt = BigInt::from(5);
+    let mut nums: Vec<BigInt> = vec![
+        BigInt::from(1),
+        BigInt::from(0),
+        BigInt::from(1),
+        BigInt::from(6),
+        BigInt::from(4),
+    ];
+
+    while i < n {
+        let new: BigInt = fib_rec(&nums);
+        nums.push(new);
+        i += 1;
+        // println!("{:?}", nums);
+        // println!("{}", i);
+    }
+    nums
 }
