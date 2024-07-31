@@ -16,14 +16,31 @@ use super::primes::{generate_primes, is_prime};
 /// use bens_number_theory::perfect_numbers::generate_even_perfect_numbers;
 /// assert_eq!(generate_even_perfect_numbers(10), vec![6, 28, 496, 8128]);
 /// ```
-pub fn generate_even_perfect_numbers(n: i32) -> Vec<u32> {
+pub fn generate_even_perfect_numbers<T>(n: T) -> Vec<T>
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::FromPrimitive
+        + num::ToPrimitive
+        + std::ops::Sub<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::Ord
+        + Copy,
+{
     // use the euclid-euler theorem
     // lets start by generating prime numbers up until n
-    let primes: Vec<i32> = generate_primes(n);
-    let mut nums: Vec<u32> = vec![];
+    let primes: Vec<T> = generate_primes(n);
+    let mut nums: Vec<T> = vec![];
     for prime in primes {
-        if is_prime(2_i32.pow(prime as u32) - 1) {
-            nums.push(2_u32.pow((prime - 1) as u32) * (2_u32.pow(prime as u32) - 1));
+        if is_prime(2_i32.pow(prime.to_u32().unwrap()) - 1) {
+            nums.push(
+                T::from_u32(
+                    2_u32.pow((prime - T::one()).to_u32().unwrap())
+                        * (2_u32.pow(prime.to_u32().unwrap()) - 1),
+                )
+                .unwrap(),
+            );
         }
     }
     nums
@@ -48,11 +65,21 @@ pub fn generate_even_perfect_numbers(n: i32) -> Vec<u32> {
 /// assert_eq!(is_perfect_number(6), true); // 1 + 2 + 3 = 6
 /// assert_eq!(is_perfect_number(8), false); // 1 + 2 + 4 != 8
 /// ```
-pub fn is_perfect_number(n: i32) -> bool {
-    let mut divisors: Vec<i32> = divisors(n);
+pub fn is_perfect_number<T>(n: T) -> bool
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::FromPrimitive
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::Ord
+        + Copy,
+{
+    let mut divisors: Vec<T> = divisors(n);
     divisors.pop();
     let mut i: usize = 0;
-    let mut sum: i32 = 0;
+    let mut sum: T = T::zero();
     while i < divisors.len() {
         sum += divisors[i];
         i += 1;
@@ -80,15 +107,25 @@ pub fn is_perfect_number(n: i32) -> bool {
 /// assert_eq!(divisors(10), vec![1, 2, 5, 10]);
 /// assert_eq!(divisors(20), vec![1, 2, 4, 5, 10, 20]);
 /// ```
-pub fn divisors(n: i32) -> Vec<i32> {
-    let mut d: Vec<i32> = vec![];
-    let mut i: i32 = 1;
-    while i < n / 2 {
-        if n % i == 0 {
+pub fn divisors<T>(n: T) -> Vec<T>
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::FromPrimitive
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::Ord
+        + Copy,
+{
+    let mut d: Vec<T> = vec![];
+    let mut i: T = T::one();
+    while i < n / T::from_i32(2).unwrap() {
+        if n % i == T::zero() {
             d.push(i);
             d.push(n / i);
         }
-        i += 1;
+        i += T::one();
     }
     d.sort();
     d.dedup();

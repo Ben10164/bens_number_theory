@@ -14,24 +14,36 @@
 ///
 /// ```
 /// use bens_number_theory::primes::is_prime;
-/// assert_eq!(is_prime(9), false);
-/// assert_eq!(is_prime(11), true);
+/// assert_eq!(is_prime(9_i128), false);
+/// assert_eq!(is_prime(11_u8), true);
 /// ```
-pub fn is_prime(n: i32) -> bool {
+pub fn is_prime<T>(n: T) -> bool
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::FromPrimitive
+        + num::ToPrimitive
+        + std::ops::Sub<Output = T>
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::Ord
+        + Copy,
+{
     // account for early false negative/positives
-    if n == 2 {
+    if n == T::from_u32(2).unwrap() {
         return true;
-    } else if n <= 1 {
+    } else if n <= T::one() {
         return false;
     }
 
-    let limit: f32 = (n as f32).sqrt();
-    let p: Vec<i32> = generate_primes((n / 2) + 1);
+    let limit: f32 = (n.to_f32().unwrap()).sqrt();
+    let p: Vec<T> = generate_primes((n / T::from_i32(2).unwrap()) + T::one());
     for prime in &p {
-        if n % prime == 0 {
+        if n % *prime == T::zero() {
             return false;
         }
-        if *prime as f32 > limit {
+        if prime.to_f32().unwrap() > limit {
             return true;
         }
     }
@@ -58,18 +70,32 @@ pub fn is_prime(n: i32) -> bool {
 /// ```
 /// use bens_number_theory::primes::generate_primes;
 /// assert_eq!(generate_primes(10), vec![2, 3, 5, 7]);
+/// assert_eq!(generate_primes(10_u8), vec![2_u8, 3_u8, 5_u8, 7_u8]);
 /// ```
-pub fn generate_primes(limit: i32) -> Vec<i32> {
-    if limit < 0 {
+pub fn generate_primes<T>(limit: T) -> Vec<T>
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::ToPrimitive
+        + num::FromPrimitive
+        + std::ops::Mul<Output = T>
+        + std::ops::Sub<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::PartialOrd
+        + Clone
+        + Copy,
+{
+    if limit < T::zero() {
         panic!();
     }
-    let mut p: Vec<i32> = vec![2, 3];
-    let mut n: i32 = 5;
+    let mut p: Vec<T> = vec![T::from_i32(2).unwrap(), T::from_u32(3).unwrap()];
+    let mut n: T = T::from_i32(5).unwrap();
     while n < limit {
         if is_prime_list(n, p.clone()) {
             p.push(n);
         }
-        n += 2;
+        n += T::from_i32(2).unwrap();
     }
     p
 }
@@ -96,13 +122,26 @@ pub fn generate_primes(limit: i32) -> Vec<i32> {
 /// assert_eq!(is_prime_list(9, primes.clone()), false);
 /// assert_eq!(is_prime_list(11, primes), true);
 /// ```
-pub fn is_prime_list(n: i32, p: Vec<i32>) -> bool {
-    let limit: f32 = (n as f32).sqrt();
+pub fn is_prime_list<T>(n: T, p: Vec<T>) -> bool
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::ToPrimitive
+        + num::FromPrimitive
+        + std::ops::Mul<Output = T>
+        + std::ops::Sub<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::PartialOrd
+        + Clone
+        + Copy,
+{
+    let limit: f32 = (n.to_f32().unwrap()).sqrt();
     for prime in &p {
-        if n % prime == 0 {
+        if n % *prime == T::zero() {
             return false;
         }
-        if *prime as f32 > limit {
+        if prime.to_f32().unwrap() > limit {
             return true;
         }
     }
@@ -111,11 +150,11 @@ pub fn is_prime_list(n: i32, p: Vec<i32>) -> bool {
     false
 }
 
-/// Checks if a given u128 number is a prime.
+/// Checks if a given number is a prime.
 ///
 /// Arguments:
 ///
-/// * `m` - u128 to check if it is a prime.
+/// * `m` - Number to check if it is a prime.
 ///
 /// Returns:
 ///
@@ -125,27 +164,37 @@ pub fn is_prime_list(n: i32, p: Vec<i32>) -> bool {
 ///
 /// ```
 /// use bens_number_theory::primes::is_prime_lazy;
-/// assert_eq!(is_prime_lazy(2_u128), true);
+/// assert_eq!(is_prime_lazy(2_), true);
 /// assert_eq!(is_prime_lazy(3_u128), true);
-/// assert_eq!(is_prime_lazy(4_u128), false);
-/// assert_eq!(is_prime_lazy(5_u128), true);
+/// assert_eq!(is_prime_lazy(4_i128), false);
+/// assert_eq!(is_prime_lazy(5_i32), true);
 /// ```
-pub fn is_prime_lazy(n: u128) -> bool {
-    if n == 1 {
+pub fn is_prime_lazy<T>(n: T) -> bool
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::FromPrimitive
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::PartialOrd
+        + Copy,
+{
+    if n == T::one() {
         return false;
     }
-    if n == 2 {
+    if n == T::from_i32(2).unwrap() {
         return true;
     }
-    if n % 2 == 0 {
+    if n % T::from_i32(2).unwrap() == T::zero() {
         false
     } else {
-        let mut i: u128 = 3;
-        while i <= n / 2 {
-            if n % i == 0 {
+        let mut i: T = T::from_i32(3).unwrap();
+        while i <= n / T::from_i32(2).unwrap() {
+            if n % i == T::zero() {
                 return false;
             }
-            i += 2;
+            i += T::from_i32(2).unwrap();
         }
         true
     }
@@ -167,13 +216,24 @@ pub fn is_prime_lazy(n: u128) -> bool {
 ///
 /// ```
 /// use bens_number_theory::primes::is_mersenne_prime;
-/// assert_eq!(is_mersenne_prime((2_u128.pow(2)) - 1), true);
-/// assert_eq!(is_mersenne_prime((2_u128.pow(3)) - 1), true);
+/// assert_eq!(is_mersenne_prime((2_i32.pow(2)) - 1), true);
+/// assert_eq!(is_mersenne_prime((2_u64.pow(3)) - 1), true);
 /// assert_eq!(is_mersenne_prime((2_u128.pow(4)) - 1), false);
-/// assert_eq!(is_mersenne_prime((2_u128.pow(5)) - 1), true);
+/// assert_eq!(is_mersenne_prime((2_i128.pow(5)) - 1), true);
 /// ```
-pub fn is_mersenne_prime(m: u128) -> bool {
-    if is_prime_lazy(m) && is_prime_lazy(((m + 1).ilog2()) as u128) {
+pub fn is_mersenne_prime<T>(m: T) -> bool
+where
+    T: num::traits::Zero
+        + num::traits::One
+        + num::FromPrimitive
+        + num::ToPrimitive
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::PartialOrd
+        + Copy,
+{
+    if is_prime_lazy(m) && is_prime_lazy((m + T::one()).to_usize().unwrap().ilog2()) {
         return true;
     }
     false

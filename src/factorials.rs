@@ -1,6 +1,4 @@
-use num::BigInt;
-
-/// Calculate the factorial of a `BigInt` `n`.
+/// Calculate the factorial of a number `n`.
 ///
 /// # Arguments
 ///
@@ -17,42 +15,22 @@ use num::BigInt;
 /// use num::BigInt;
 /// use std::str::FromStr;
 ///
-/// assert_eq!(factorial(BigInt::from(0_u32)), BigInt::from_str("1").unwrap());
-/// assert_eq!(factorial(BigInt::from(1_u32)), BigInt::from_str("1").unwrap());
+/// assert_eq!(factorial(0_i8), 1_i8);
+/// assert_eq!(factorial(1), 1);
 /// assert_eq!(factorial(BigInt::from(15_u32)), BigInt::from_str("1307674368000").unwrap());
 /// ```
-pub fn factorial(n: BigInt) -> BigInt {
+pub fn factorial<T>(n: T) -> T
+where
+    T: num::traits::One
+        + std::ops::Sub<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::PartialOrd
+        + Clone,
+{
     match n {
         // n if n <= BigInt::from(1_u32) => BigInt::from(1_u32),
-        i if i <= BigInt::from(1_u8) => BigInt::from(1_u8),
-        _ => n.clone() * factorial(n - BigInt::from(1_u8)),
-    }
-}
-
-/// Calculate the factorial of a `u128` `n`.
-///
-/// # Arguments
-///
-/// * `n` - The value of `n` in `n!`.
-///
-/// # Returns
-///
-/// `n!`
-///
-/// # Examples
-///
-/// ```
-/// use bens_number_theory::factorials::factorial_u128;
-///
-/// assert_eq!(factorial_u128(0), 1);
-/// assert_eq!(factorial_u128(1), 1);
-/// assert_eq!(factorial_u128(5), 120);
-/// assert_eq!(factorial_u128(10), 3628800);
-/// ```
-pub fn factorial_u128(n: u128) -> u128 {
-    match n {
-        0 | 1 => 1,
-        _ => (2..=n).product(),
+        i if i <= T::one() => T::one(),
+        _ => n.clone() * factorial(n - T::one()),
     }
 }
 
@@ -60,11 +38,11 @@ pub fn factorial_u128(n: u128) -> u128 {
 ///
 /// # Arguments:
 ///
-/// * `n` - `u128`, the number up to which we want to calculate the factorials. The function then returns a vector of type `Vec<u128>` containing the factorials of numbers from 1 to `n`
+/// * `n` - the number up to which we want to calculate the factorials. The function then returns a vector of type `Vec<T>` containing the factorials of numbers from 1 to `n`
 ///
 /// # Returns:
 ///
-/// Vector of `u128` values containing the factorial of numbers from 1 up to `n` (inclusive).
+/// Vector of values containing the factorial of numbers from 1 up to `n` (inclusive).
 ///
 /// # Examples
 ///
@@ -74,12 +52,19 @@ pub fn factorial_u128(n: u128) -> u128 {
 /// let factorials: Vec<u128> = factorial_list(10);
 /// assert_eq!(factorials, [1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800])
 /// ```
-pub fn factorial_list(n: u128) -> Vec<u128> {
-    let mut f: Vec<u128> = vec![];
-    let mut i: u128 = 1;
+pub fn factorial_list<T>(n: T) -> Vec<T>
+where
+    T: num::traits::One
+        + std::ops::Sub<Output = T>
+        + std::ops::AddAssign
+        + std::cmp::PartialOrd
+        + Copy,
+{
+    let mut f: Vec<T> = vec![];
+    let mut i: T = T::one();
     while i <= n {
-        f.push(factorial_u128(i));
-        i += 1;
+        f.push(factorial(i));
+        i += T::one();
     }
     f
 }

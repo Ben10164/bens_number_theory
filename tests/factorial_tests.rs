@@ -1,6 +1,6 @@
 #[cfg(test)]
 mod factorial_tests {
-    use bens_number_theory::factorials::{factorial, factorial_u128};
+    use bens_number_theory::factorials::factorial;
     use num::BigInt;
 
     #[test]
@@ -9,13 +9,10 @@ mod factorial_tests {
         assert_eq!(factorial(BigInt::from(1)), BigInt::from(1));
         assert_eq!(factorial(BigInt::from(5)), BigInt::from(120));
         assert_eq!(factorial(BigInt::from(10)), BigInt::from(3628800));
-    }
-    #[test]
-    fn test_factorial_u128() {
-        assert_eq!(factorial_u128(0), 1);
-        assert_eq!(factorial_u128(1), 1);
-        assert_eq!(factorial_u128(5), 120);
-        assert_eq!(factorial_u128(10), 3628800);
+        assert_eq!(factorial(0), 1);
+        assert_eq!(factorial(1), 1);
+        assert_eq!(factorial(5), 120);
+        assert_eq!(factorial(10), 3628800);
     }
 }
 
