@@ -10,9 +10,9 @@ mod general_tests {
 
     #[test]
     fn perfect_number_test() {
-        assert!(is_perfect_number(6));
-        assert!(!is_perfect_number(7));
-        assert!(is_perfect_number(28));
+        assert!(is_perfect_number(6_i128));
+        assert!(!is_perfect_number(7_u8));
+        assert!(is_perfect_number(28_u32));
         assert!(!is_perfect_number(29));
         assert!(is_perfect_number(8128));
         assert!(!is_perfect_number(8130));

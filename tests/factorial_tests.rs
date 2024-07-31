@@ -26,6 +26,11 @@ mod factorial_list_tests {
         assert_eq!(
             factorials,
             [1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800]
+        );
+        let factorials: Vec<i32> = factorial_list(10);
+        assert_eq!(
+            factorials,
+            [1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800]
         )
     }
 }

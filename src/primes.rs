@@ -59,7 +59,7 @@ where
 /// * `limit`
 ///     * The `limit` parameter specifies the upper limit up to which you want to generate prime numbers.
 ///     * The function `generate_primes` will generate all prime numbers up to this limit and return
-/// them as a vector.
+///       them as a vector.
 ///
 /// # Returns
 ///

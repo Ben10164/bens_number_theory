@@ -5,48 +5,48 @@ mod is_prime_tests {
     #[test]
     fn test_prime_numbers_lazy() {
         assert!(is_prime_lazy(2));
-        assert!(is_prime_lazy(3));
-        assert!(is_prime_lazy(5));
-        assert!(is_prime_lazy(7));
-        assert!(is_prime_lazy(13));
+        assert!(is_prime_lazy(3_u8));
+        assert!(is_prime_lazy(5_i128));
+        assert!(is_prime_lazy(7_i64));
+        assert!(is_prime_lazy(13_u64));
     }
 
     #[test]
     fn test_non_prime_numbers_lazy() {
         assert!(!is_prime_lazy(1));
         assert!(!is_prime_lazy(4));
-        assert!(!is_prime_lazy(6));
-        assert!(!is_prime_lazy(8));
+        assert!(!is_prime_lazy(6_u64));
+        assert!(!is_prime_lazy(8_i128));
         assert!(!is_prime_lazy(10));
-        assert!(!is_prime_lazy(12));
+        assert!(!is_prime_lazy(12_i128));
         assert!(!is_prime_lazy(14));
     }
 
     #[test]
     fn test_non_prime_numbers() {
         // Test some non-prime numbers
-        assert!(!is_prime(4));
-        assert!(!is_prime(6));
+        assert!(!is_prime(4_u8));
+        assert!(!is_prime(6_u8));
         assert!(!is_prime(8));
-        assert!(!is_prime(9));
-        assert!(!is_prime(10));
-        assert!(!is_prime(12));
+        assert!(!is_prime(9_i128));
+        assert!(!is_prime(10_i128));
+        assert!(!is_prime(12_u8));
         assert!(!is_prime(14));
         assert!(!is_prime(15));
-        assert!(!is_prime(16));
+        assert!(!is_prime(16_i128));
     }
 
     #[test]
     fn test_prime_numbers() {
         // Test some prime numbers
-        assert!(is_prime(2));
+        assert!(is_prime(2_u32));
         assert!(is_prime(3));
-        assert!(is_prime(5));
+        assert!(is_prime(5_i8));
         assert!(is_prime(7));
-        assert!(is_prime(11));
+        assert!(is_prime(11_i8));
         assert!(is_prime(13));
         assert!(is_prime(17));
-        assert!(is_prime(19));
+        assert!(is_prime(19_i128));
         assert!(is_prime(23));
     }
 
@@ -56,14 +56,14 @@ mod is_prime_tests {
         assert!(!is_prime(-2));
         assert!(!is_prime(-3));
         assert!(!is_prime(-5));
-        assert!(!is_prime(-7));
+        assert!(!is_prime(-7_i128));
     }
 
     #[test]
     fn test_zero_and_one() {
         // Test zero and one
         assert!(!is_prime(0));
-        assert!(!is_prime(1));
+        assert!(!is_prime(1_i128));
     }
 
     #[test]
@@ -71,7 +71,8 @@ mod is_prime_tests {
         // Test case for checking prime numbers up to a large limit
         let primes: Vec<i32> = generate_primes(100);
         assert!(is_prime_list(97, primes.clone())); // 97 is prime
-        assert!(!is_prime_list(99, primes.clone())); // 99 is not prime
+        let primes: Vec<i128> = generate_primes(100);
+        assert!(!is_prime_list(99_i128, primes.clone())); // 99 is not prime
         assert!(is_prime_list(101, primes)); // 101 is prime
     }
 
@@ -185,12 +186,12 @@ mod is_mersenne_prime_tests {
 
     #[test]
     fn mersenne_primes_tests2() {
-        assert!(is_mersenne_prime((2_u128.pow(3)) - 1));
+        assert!(is_mersenne_prime((2_u32.pow(3)) - 1));
     }
 
     #[test]
     fn mersenne_primes_tests3() {
-        assert!(is_mersenne_prime((2_u128.pow(5)) - 1));
+        assert!(is_mersenne_prime((2_i8.pow(5)) - 1));
     }
 
     #[test]

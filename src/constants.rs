@@ -23,11 +23,14 @@ use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
 /// ```
 /// use bens_number_theory::constants::estimate_pi_ratio;
 ///
-/// assert!(estimate_pi_ratio(1).to_string().starts_with("158853645"));
-/// assert!(estimate_pi_ratio(1).to_string().contains('/'));
+/// assert!(estimate_pi_ratio(1_i128).to_string().starts_with("158853645"));
+/// assert!(estimate_pi_ratio(1_u8).to_string().contains('/'));
 /// assert!(estimate_pi_ratio(1).to_string().ends_with("899151951"));
 /// ```
-pub fn estimate_pi_ratio(n: u32) -> BigRational {
+pub fn estimate_pi_ratio<T>(n: T) -> BigRational
+where
+    T: num::FromPrimitive + std::cmp::PartialOrd,
+{
     // A
     let a_root_two: BigRational = approx_sqrt(2, 10_usize);
     let a_two: BigRational = BigRational::from_integer(FromPrimitive::from_u64(2).unwrap());
@@ -36,7 +39,7 @@ pub fn estimate_pi_ratio(n: u32) -> BigRational {
 
     let mut i: u32 = 0;
     let mut sum: BigRational = BigRational::from_integer(FromPrimitive::from_u64(0).unwrap());
-    while i < n {
+    while T::from_u32(i).unwrap() < n {
         // B_n
         let b_top: BigRational =
             BigRational::from(factorial(BigInt::from(4 * i)) * (1103 + 26390 * i));
@@ -74,13 +77,17 @@ pub fn estimate_pi_ratio(n: u32) -> BigRational {
 ///
 /// println!("{}", approx_sqrt(100_u64, 10_usize));
 /// ```
-fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
-    let start: Ratio<BigInt> = Ratio::from_integer(FromPrimitive::from_u64(number).unwrap());
+fn approx_sqrt<T>(number: u64, iterations: usize) -> Ratio<T>
+where
+    T: std::clone::Clone + std::ops::Div<Output = T> + num::FromPrimitive + num::Integer,
+{
+    let start: Ratio<T> = Ratio::from(T::from_u64(number).unwrap());
+    // let start: Ratio<T> = Ratio::from_integer(FromPrimitive::from_u64(number).unwrap());
     let mut approx = start.clone();
 
     for _ in 0..iterations {
-        approx = (&approx + (&start / &approx))
-            / Ratio::from_integer(FromPrimitive::from_u64(2).unwrap());
+        approx = (&approx + (&start / &approx)) / Ratio::from(T::from_u8(2).unwrap());
+        // / Ratio::from_integer(FromPrimitive::from_u64(2).unwrap());
     }
     approx
 }
@@ -163,12 +170,22 @@ fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
 ///
 /// println!("{}", golden_ratio(BigInt::from(10)));
 /// ```
-pub fn golden_ratio(n: BigInt) -> Ratio<BigInt> {
-    if n < BigInt::from(2) {
-        return BigRational::from_i32(0_i32).unwrap();
+pub fn golden_ratio<T>(n: T) -> Ratio<T>
+where
+    T: std::cmp::PartialOrd
+        + num::FromPrimitive
+        + num::traits::Zero
+        + std::clone::Clone
+        + num::Integer
+        + std::ops::AddAssign,
+{
+    if n < T::from_i32(2).unwrap() {
+        let val: Ratio<T> = Ratio::from(T::zero());
+        return val;
+        // return BigRational::from_i32(0_i32).unwrap();
     }
-    let mut lucas: Vec<BigInt> = crate::sequences::lucas_sequence(n);
-    let numerator: Ratio<BigInt> = BigRational::from(lucas.pop().unwrap());
-    let demom: Ratio<BigInt> = BigRational::from(lucas.pop().unwrap());
+    let mut lucas: Vec<T> = crate::sequences::lucas_sequence(n);
+    let numerator: Ratio<T> = Ratio::from(lucas.pop().unwrap());
+    let demom: Ratio<T> = Ratio::from(lucas.pop().unwrap());
     numerator / demom
 }

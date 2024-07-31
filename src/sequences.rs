@@ -29,11 +29,19 @@ use num::BigInt;
 ///     BigInt::from(4), BigInt::from(7)]
 /// );
 /// ```
-pub fn lucas_sequence(n: BigInt) -> Vec<BigInt> {
+pub fn lucas_sequence<T>(n: T) -> Vec<T>
+where
+    T: std::cmp::PartialOrd
+        + num::FromPrimitive
+        + num::One
+        + num::Zero
+        + std::ops::AddAssign
+        + Clone,
+{
     match n {
-        _ if n == BigInt::from(0) => vec![],
-        _ if n == BigInt::from(1) => vec![BigInt::from(2)],
-        _ => generate_lucas_sequence(n),
+        _ if n == T::zero() => vec![],
+        _ if n == T::one() => vec![T::from_u8(2).unwrap()],
+        _ => generate_lucas_sequence(n.clone()),
     }
 }
 
@@ -77,14 +85,22 @@ pub fn lucas_sequence(n: BigInt) -> Vec<BigInt> {
 ///     BigInt::from(4), BigInt::from(7)]
 /// );
 /// ```
-fn generate_lucas_sequence(n: BigInt) -> Vec<BigInt> {
-    let mut p: Vec<BigInt> = vec![BigInt::from(2), BigInt::from(1)];
-    let mut i: BigInt = BigInt::from(2);
+fn generate_lucas_sequence<T>(n: T) -> Vec<T>
+where
+    T: num::FromPrimitive
+        + num::traits::One
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign
+        + std::ops::Add<Output = T>
+        + Clone,
+{
+    let mut p: Vec<T> = vec![T::from_u8(2).unwrap(), T::one()];
+    let mut i: T = T::from_u8(2).unwrap();
     while i < n {
-        let last_two: &[BigInt; 2] = p.last_chunk().unwrap();
-        let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
+        let last_two: &[T; 2] = p.last_chunk().unwrap();
+        let new: T = last_two.first().unwrap().clone() + last_two.get(1).unwrap().clone();
         p.push(new);
-        i += 1;
+        i += T::one();
     }
     p
 }
