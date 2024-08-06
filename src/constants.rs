@@ -77,13 +77,15 @@ where
 ///
 /// println!("{}", approx_sqrt(100_u64, 10_usize));
 /// ```
-fn approx_sqrt(number: u64, iterations: usize) -> BigRational {
-    let start: Ratio<BigInt> = Ratio::from_integer(FromPrimitive::from_u64(number).unwrap());
+pub fn approx_sqrt<T>(number: u64, iterations: usize) -> Ratio<T>
+where
+    T: std::ops::Div<Output = T> + std::clone::Clone + num::FromPrimitive + num::Integer,
+{
+    let start: Ratio<T> = Ratio::from(T::from_u64(number).unwrap());
     let mut approx = start.clone();
 
     for _ in 0..iterations {
-        approx = (&approx + (&start / &approx))
-            / Ratio::from_integer(FromPrimitive::from_u64(2).unwrap());
+        approx = (&approx + (&start / &approx)) / Ratio::from(T::from_u8(2).unwrap());
     }
     approx
 }
