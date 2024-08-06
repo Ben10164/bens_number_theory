@@ -1,5 +1,3 @@
-use super::primes::{generate_primes, is_prime};
-
 /// Uses the Euclid-Euler theorem to calculate even perfect numbers.
 ///
 /// # Arguments
@@ -30,10 +28,10 @@ where
 {
     // use the euclid-euler theorem
     // lets start by generating prime numbers up until n
-    let primes: Vec<T> = generate_primes(n);
+    let primes: Vec<T> = super::primes::generate_primes(n);
     let mut nums: Vec<T> = vec![];
     for prime in primes {
-        if is_prime(2_i32.pow(prime.to_u32().unwrap()) - 1) {
+        if super::primes::is_prime(2_i32.pow(prime.to_u32().unwrap()) - 1) {
             nums.push(
                 T::from_u32(
                     2_u32.pow((prime - T::one()).to_u32().unwrap())
@@ -67,14 +65,14 @@ where
 /// ```
 pub fn is_perfect_number<T>(n: T) -> bool
 where
-    T: num::traits::Zero
+    T: num::FromPrimitive
+        + num::traits::Zero
         + num::traits::One
-        + num::FromPrimitive
-        + std::ops::Div<Output = T>
-        + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
         + std::cmp::Ord
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>,
 {
     let mut divisors: Vec<T> = divisors(n);
     divisors.pop();
@@ -109,14 +107,14 @@ where
 /// ```
 pub fn divisors<T>(n: T) -> Vec<T>
 where
-    T: num::traits::Zero
+    T: num::FromPrimitive
         + num::traits::One
-        + num::FromPrimitive
-        + std::ops::Div<Output = T>
-        + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
+        + num::traits::Zero
         + std::cmp::Ord
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>,
 {
     let mut d: Vec<T> = vec![];
     let mut i: T = T::one();

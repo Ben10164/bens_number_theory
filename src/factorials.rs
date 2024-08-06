@@ -22,10 +22,10 @@
 pub fn factorial<T>(n: T) -> T
 where
     T: num::traits::One
-        + std::ops::Sub<Output = T>
-        + std::ops::AddAssign
+        + std::clone::Clone
         + std::cmp::PartialOrd
-        + Clone,
+        + std::ops::AddAssign
+        + std::ops::Sub<Output = T>,
 {
     match n {
         // n if n <= BigInt::from(1_u32) => BigInt::from(1_u32),
@@ -55,10 +55,10 @@ where
 pub fn factorial_list<T>(n: T) -> Vec<T>
 where
     T: num::traits::One
-        + std::ops::Sub<Output = T>
-        + std::ops::AddAssign
         + std::cmp::PartialOrd
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Sub<Output = T>,
 {
     let mut f: Vec<T> = vec![];
     let mut i: T = T::one();

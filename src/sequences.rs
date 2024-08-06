@@ -23,24 +23,24 @@ use num::BigInt;
 /// use bens_number_theory::sequences::lucas_sequence;
 /// use num::BigInt;
 ///
-/// let lucas = lucas_sequence(BigInt::from(5));
+/// let lucas = lucas_sequence(5);
 /// assert_eq!(lucas, [BigInt::from(2),
 ///     BigInt::from(1), BigInt::from(3),
 ///     BigInt::from(4), BigInt::from(7)]
 /// );
 /// ```
-pub fn lucas_sequence<T>(n: T) -> Vec<T>
+pub fn lucas_sequence<T>(n: T) -> Vec<BigInt>
 where
-    T: std::cmp::PartialOrd
-        + num::FromPrimitive
+    T: num::FromPrimitive
         + num::One
         + num::Zero
-        + std::ops::AddAssign
-        + Clone,
+        + std::clone::Clone
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign,
 {
     match n {
         _ if n == T::zero() => vec![],
-        _ if n == T::one() => vec![T::from_u8(2).unwrap()],
+        _ if n == T::one() => vec![BigInt::from(2)],
         _ => generate_lucas_sequence(n.clone()),
     }
 }
@@ -67,14 +67,21 @@ where
 /// ```
 /// use num::BigInt;
 ///
-/// fn generate_lucas_sequence(n: BigInt) -> Vec<BigInt> {
+/// fn generate_lucas_sequence<T>(n: T) -> Vec<BigInt>
+/// where
+///     T: num::FromPrimitive
+///         + num::traits::One
+///         + std::cmp::PartialOrd
+///         + std::ops::AddAssign
+///         + std::ops::Add<Output = T>,
+/// {
 ///     let mut p: Vec<BigInt> = vec![BigInt::from(2), BigInt::from(1)];
-///     let mut i: BigInt = BigInt::from(2);
+///     let mut i: T = T::one() + T::one();
 ///     while i < n {
 ///         let last_two: &[BigInt; 2] = p.last_chunk().unwrap();
-///         let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
+///         let new: BigInt = last_two.first().unwrap().clone() + last_two.get(1).unwrap().clone();
 ///         p.push(new);
-///         i += 1;
+///         i += T::one();
 ///     }
 ///     p
 /// }
@@ -85,20 +92,19 @@ where
 ///     BigInt::from(4), BigInt::from(7)]
 /// );
 /// ```
-fn generate_lucas_sequence<T>(n: T) -> Vec<T>
+fn generate_lucas_sequence<T>(n: T) -> Vec<BigInt>
 where
     T: num::FromPrimitive
         + num::traits::One
         + std::cmp::PartialOrd
         + std::ops::AddAssign
-        + std::ops::Add<Output = T>
-        + Clone,
+        + std::ops::Add<Output = T>,
 {
-    let mut p: Vec<T> = vec![T::from_u8(2).unwrap(), T::one()];
-    let mut i: T = T::from_u8(2).unwrap();
+    let mut p: Vec<BigInt> = vec![BigInt::from(2), BigInt::from(1)];
+    let mut i: T = T::one() + T::one();
     while i < n {
-        let last_two: &[T; 2] = p.last_chunk().unwrap();
-        let new: T = last_two.first().unwrap().clone() + last_two.get(1).unwrap().clone();
+        let last_two: &[BigInt; 2] = p.last_chunk().unwrap();
+        let new: BigInt = last_two.first().unwrap().clone() + last_two.get(1).unwrap().clone();
         p.push(new);
         i += T::one();
     }
@@ -138,16 +144,29 @@ where
 /// let sequence = dying_rabbits_sequence(BigInt::from(5));
 /// assert_eq!(sequence, [BigInt::from(1),
 ///     BigInt::from(1), BigInt::from(1),
+///     BigInt::from(2), BigInt::from(3)]);
+///
+/// let sequence = dying_rabbits_sequence(5);
+/// assert_eq!(sequence, [BigInt::from(1),
+///     BigInt::from(1), BigInt::from(1),
 ///     BigInt::from(2), BigInt::from(3)]
-/// )
+/// );
 /// ```
-pub fn dying_rabbits_sequence(n: BigInt) -> Vec<BigInt> {
-    let mut i: BigInt = BigInt::from(0);
+pub fn dying_rabbits_sequence<T>(n: T) -> Vec<BigInt>
+where
+    T: num::FromPrimitive
+        + num::traits::One
+        + num::traits::Zero
+        + std::clone::Clone
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign,
+{
+    let mut i: T = T::zero();
     let mut nums: Vec<BigInt> = vec![];
     while i < n {
         // println!("{}", decide_dying_rabbit(&i, &nums));
         nums.push(decide_dying_rabbit(i.clone(), &nums));
-        i += 1;
+        i += T::one();
     }
     nums
 }
@@ -178,13 +197,20 @@ pub fn dying_rabbits_sequence(n: BigInt) -> Vec<BigInt> {
 ///     new
 /// }
 ///
-/// fn decide_dying_rabbit(i: BigInt, nums: &[BigInt]) -> BigInt {
+/// fn decide_dying_rabbit<T>(i: T, nums: &[BigInt]) -> BigInt
+/// where
+///     T: num::FromPrimitive
+///         + num::traits::One
+///         + num::traits::Zero
+///         + std::clone::Clone
+///         + std::cmp::PartialOrd
+///         + std::ops::AddAssign,
+/// {
 ///     match i {
-///         _ if i == BigInt::from(0) => BigInt::from(1),
-///         _ if i < BigInt::from(13) => fibonacci_sequence(i + BigInt::from(1))
-///             .last()
-///             .unwrap()
-///             .to_owned(),
+///         _ if i == T::zero() => BigInt::from(1),
+///         _ if i < T::from_i8(13).unwrap() => {
+///             fibonacci_sequence(i + T::one()).last().unwrap().to_owned()
+///         }
 ///         _ => dying_rec(nums),
 ///     }
 /// }
@@ -193,13 +219,20 @@ pub fn dying_rabbits_sequence(n: BigInt) -> Vec<BigInt> {
 /// let result = decide_dying_rabbit(BigInt::from(1), &nums);
 /// assert_eq!(result, BigInt::from(1));
 /// ```
-fn decide_dying_rabbit(i: BigInt, nums: &[BigInt]) -> BigInt {
+fn decide_dying_rabbit<T>(i: T, nums: &[BigInt]) -> BigInt
+where
+    T: num::FromPrimitive
+        + num::traits::One
+        + num::traits::Zero
+        + std::clone::Clone
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign,
+{
     match i {
-        _ if i == BigInt::from(0) => BigInt::from(1),
-        _ if i < BigInt::from(13) => fibonacci_sequence(i + BigInt::from(1))
-            .last()
-            .unwrap()
-            .to_owned(),
+        _ if i == T::zero() => BigInt::from(1),
+        _ if i < T::from_i8(13).unwrap() => {
+            fibonacci_sequence(i + T::one()).last().unwrap().to_owned()
+        }
         _ => dying_rec(nums),
     }
 }
@@ -272,14 +305,22 @@ fn dying_rec(nums: &[BigInt]) -> BigInt {
 ///     BigInt::from(2), BigInt::from(3)]
 /// );
 /// ```
-pub fn fibonacci_sequence(n: BigInt) -> Vec<BigInt> {
-    let mut i: BigInt = BigInt::from(2);
+pub fn fibonacci_sequence<T>(n: T) -> Vec<BigInt>
+where
+    T: num::FromPrimitive
+        + num::traits::One
+        + num::traits::Zero
+        + std::clone::Clone
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign,
+{
+    let mut i: T = T::from_i8(2).unwrap();
     let mut nums: Vec<BigInt> = vec![BigInt::from(0), BigInt::from(1)];
 
     while i < n {
         let new: BigInt = fib_rec(&nums);
         nums.push(new);
-        i += 1;
+        i += T::one();
         // println!("{:?}", nums);
         // println!("{}", i);
     }
@@ -304,28 +345,68 @@ pub fn fibonacci_sequence(n: BigInt) -> Vec<BigInt> {
 /// ```
 /// use num::BigInt;
 ///
-/// fn fib_rec(nums: &[BigInt]) -> BigInt {
-///     let last_two: &[BigInt; 2] = nums.last_chunk().unwrap();
-///     let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
+/// fn fib_rec<T>(nums: &[T]) -> T
+/// where
+///     T: std::clone::Clone + std::ops::Add<Output = T>,
+/// {
+///     let last_two: &[T; 2] = nums.last_chunk().unwrap();
+///     let new: T = last_two.first().unwrap().clone() + last_two.get(1).unwrap().clone();
 ///     new
 /// }
 ///
 /// let last_two = [BigInt::from(1), BigInt::from(1)];
 /// let next_fib = fib_rec(&last_two);
 /// assert_eq!(next_fib, BigInt::from(2));
+///
+/// let last_two = [1, 1];
+/// let next_fib = fib_rec(&last_two);
+/// assert_eq!(next_fib, 2);
 /// ```
-fn fib_rec(nums: &[BigInt]) -> BigInt {
-    let last_two: &[BigInt; 2] = nums.last_chunk().unwrap();
-    let new: BigInt = last_two.first().unwrap() + last_two.get(1).unwrap();
+fn fib_rec<T>(nums: &[T]) -> T
+where
+    T: std::clone::Clone + std::ops::Add<Output = T>,
+{
+    let last_two: &[T; 2] = nums.last_chunk().unwrap();
+    let new: T = last_two.first().unwrap().clone() + last_two.get(1).unwrap().clone();
     new
 }
 
-pub fn fib_rec_custom(nums: &[BigInt], num: usize) -> BigInt {
-    let start_index: usize = nums.len().saturating_sub(num); // Start index for the last `num` elements
-    let last_few: &[BigInt] = &nums[start_index..]; // Slice containing the last `num` elements
-    let mut total: BigInt = BigInt::from(0);
+/// Calculate the next n-Fibonacci number recursively based on the last n numbers.
+///
+/// This function takes a slice of `BigInt` numbers representing the last two Fibonacci numbers
+/// and returns the next n-Fibonacci number in the sequence.
+///
+/// # Arguments
+///
+/// * `nums` - A slice containing Fibonacci numbers.
+/// * `n` - *n* in *n*-Fibonacci.
+///
+/// # Returns
+///
+/// The next Fibonacci number in the sequence.
+///
+/// # Examples
+///
+/// ```
+/// use num::BigInt;
+/// use bens_number_theory::sequences::fib_rec_custom;
+///
+/// let last_two = [BigInt::from(1), BigInt::from(1), BigInt::from(1)];
+/// let next_fib = fib_rec_custom(&last_two, 3);
+/// assert_eq!(next_fib, BigInt::from(3));
+/// let last_two = [1, 1, 1];
+/// let next_fib = fib_rec_custom(&last_two, 2);
+/// assert_eq!(next_fib, 2);
+/// ```
+pub fn fib_rec_custom<T>(nums: &[T], n: usize) -> T
+where
+    T: num::Zero + std::clone::Clone + std::ops::AddAssign,
+{
+    let start_index: usize = nums.len().saturating_sub(n); // Start index for the last `num` elements
+    let last_few: &[T] = &nums[start_index..]; // Slice containing the last `num` elements
+    let mut total: T = T::zero();
     for val in last_few {
-        total += val;
+        total += val.clone();
     }
     total
 }
@@ -361,9 +442,17 @@ pub fn fib_rec_custom(nums: &[BigInt], num: usize) -> BigInt {
 ///     BigInt::from(0), BigInt::from(1),
 ///     BigInt::from(6), BigInt::from(4),BigInt::from(10), BigInt::from(14)]
 /// );
+/// let sequence = ben_sequence(7);
+/// assert_eq!(sequence, [BigInt::from(1),
+///     BigInt::from(0), BigInt::from(1),
+///     BigInt::from(6), BigInt::from(4),BigInt::from(10), BigInt::from(14)]
+/// );
 /// ```
-pub fn ben_sequence(n: BigInt) -> Vec<BigInt> {
-    let mut i: BigInt = BigInt::from(5);
+pub fn ben_sequence<T>(n: T) -> Vec<BigInt>
+where
+    T: num::FromPrimitive + num::traits::One + std::cmp::PartialOrd + std::ops::AddAssign,
+{
+    let mut i: T = T::from_u8(5).unwrap();
     let mut nums: Vec<BigInt> = vec![
         BigInt::from(1),
         BigInt::from(0),
@@ -375,9 +464,7 @@ pub fn ben_sequence(n: BigInt) -> Vec<BigInt> {
     while i < n {
         let new: BigInt = fib_rec(&nums);
         nums.push(new);
-        i += 1;
-        // println!("{:?}", nums);
-        // println!("{}", i);
+        i += T::one();
     }
     nums
 }

@@ -1,5 +1,5 @@
 use crate::factorials::factorial;
-use num::{rational::Ratio, BigInt, BigRational, FromPrimitive};
+use num::{BigInt, BigRational, FromPrimitive};
 
 /// Calculate a ratio representing the value of $\pi$ using the *Ramanujan–Sato series*
 ///
@@ -77,15 +77,15 @@ where
 ///
 /// println!("{}", approx_sqrt(100_u64, 10_usize));
 /// ```
-pub fn approx_sqrt<T>(number: u64, iterations: usize) -> Ratio<T>
+pub fn approx_sqrt<T>(number: T, iterations: usize) -> BigRational
 where
-    T: std::ops::Div<Output = T> + std::clone::Clone + num::FromPrimitive + num::Integer,
+    BigInt: From<T>,
 {
-    let start: Ratio<T> = Ratio::from(T::from_u64(number).unwrap());
+    let start: BigRational = BigRational::from(BigInt::from(number));
     let mut approx = start.clone();
 
     for _ in 0..iterations {
-        approx = (&approx + (&start / &approx)) / Ratio::from(T::from_u8(2).unwrap());
+        approx = (&approx + (&start / &approx)) / BigRational::from(BigInt::from_i8(2).unwrap());
     }
     approx
 }
@@ -168,22 +168,16 @@ where
 ///
 /// println!("{}", golden_ratio(BigInt::from(10)));
 /// ```
-pub fn golden_ratio<T>(n: T) -> Ratio<T>
+pub fn golden_ratio<T>(n: T) -> BigRational
 where
-    T: std::cmp::PartialOrd
-        + num::FromPrimitive
-        + num::traits::Zero
-        + std::clone::Clone
-        + num::Integer
-        + std::ops::AddAssign,
+    T: num::FromPrimitive + std::cmp::PartialOrd,
+    BigInt: From<T>,
 {
     if n < T::from_i32(2).unwrap() {
-        let val: Ratio<T> = Ratio::from(T::zero());
-        return val;
-        // return BigRational::from_i32(0_i32).unwrap();
+        return BigRational::from(BigInt::from_i8(0).unwrap());
     }
-    let mut lucas: Vec<T> = crate::sequences::lucas_sequence(n);
-    let numerator: Ratio<T> = Ratio::from(lucas.pop().unwrap());
-    let demom: Ratio<T> = Ratio::from(lucas.pop().unwrap());
+    let mut lucas: Vec<BigInt> = crate::sequences::lucas_sequence(BigInt::from(n));
+    let numerator: BigRational = BigRational::from(lucas.pop().unwrap());
+    let demom: BigRational = BigRational::from(lucas.pop().unwrap());
     numerator / demom
 }

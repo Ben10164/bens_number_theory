@@ -19,16 +19,16 @@
 /// ```
 pub fn is_prime<T>(n: T) -> bool
 where
-    T: num::traits::Zero
-        + num::traits::One
-        + num::FromPrimitive
+    T: num::FromPrimitive
         + num::ToPrimitive
-        + std::ops::Sub<Output = T>
+        + num::traits::Zero
+        + num::traits::One
+        + std::cmp::Ord
+        + std::marker::Copy
+        + std::ops::AddAssign
         + std::ops::Div<Output = T>
         + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
-        + std::cmp::Ord
-        + Copy,
+        + std::ops::Sub<Output = T>,
 {
     // account for early false negative/positives
     if n == T::from_u32(2).unwrap() {
@@ -74,17 +74,17 @@ where
 /// ```
 pub fn generate_primes<T>(limit: T) -> Vec<T>
 where
-    T: num::traits::Zero
-        + num::traits::One
+    T: num::FromPrimitive
         + num::ToPrimitive
-        + num::FromPrimitive
-        + std::ops::Mul<Output = T>
-        + std::ops::Sub<Output = T>
-        + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
+        + num::traits::One
+        + num::traits::Zero
+        + std::clone::Clone
         + std::cmp::PartialOrd
-        + Clone
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Mul<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::Sub<Output = T>,
 {
     if limit < T::zero() {
         panic!();
@@ -124,17 +124,17 @@ where
 /// ```
 pub fn is_prime_list<T>(n: T, p: Vec<T>) -> bool
 where
-    T: num::traits::Zero
-        + num::traits::One
+    T: num::FromPrimitive
         + num::ToPrimitive
-        + num::FromPrimitive
-        + std::ops::Mul<Output = T>
-        + std::ops::Sub<Output = T>
-        + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
+        + num::traits::One
+        + num::traits::Zero
+        + std::clone::Clone
         + std::cmp::PartialOrd
-        + Clone
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Mul<Output = T>
+        + std::ops::Rem<Output = T>
+        + std::ops::Sub<Output = T>,
 {
     let limit: f32 = (n.to_f32().unwrap()).sqrt();
     for prime in &p {
@@ -171,14 +171,14 @@ where
 /// ```
 pub fn is_prime_lazy<T>(n: T) -> bool
 where
-    T: num::traits::Zero
+    T: num::FromPrimitive
         + num::traits::One
-        + num::FromPrimitive
-        + std::ops::Div<Output = T>
-        + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
+        + num::traits::Zero
         + std::cmp::PartialOrd
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>,
 {
     if n == T::one() {
         return false;
@@ -223,15 +223,15 @@ where
 /// ```
 pub fn is_mersenne_prime<T>(m: T) -> bool
 where
-    T: num::traits::Zero
-        + num::traits::One
-        + num::FromPrimitive
+    T: num::FromPrimitive
         + num::ToPrimitive
-        + std::ops::Div<Output = T>
-        + std::ops::Rem<Output = T>
-        + std::ops::AddAssign
+        + num::traits::One
+        + num::traits::Zero
         + std::cmp::PartialOrd
-        + Copy,
+        + std::marker::Copy
+        + std::ops::AddAssign
+        + std::ops::Div<Output = T>
+        + std::ops::Rem<Output = T>,
 {
     if is_prime_lazy(m) && is_prime_lazy((m + T::one()).to_usize().unwrap().ilog2()) {
         return true;
