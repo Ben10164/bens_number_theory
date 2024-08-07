@@ -1,5 +1,6 @@
-use crate::factorials::factorial;
-use num::{BigInt, BigRational, FromPrimitive};
+// use crate::factorials::factorial;
+// use dashu::integer::{IBig, UBig};
+// use num::ToPrimitive;
 
 /// Calculate a ratio representing the value of $\pi$ using the *Ramanujan–Sato series*
 ///
@@ -27,37 +28,65 @@ use num::{BigInt, BigRational, FromPrimitive};
 /// assert!(estimate_pi_ratio(1_u8).to_string().contains('/'));
 /// assert!(estimate_pi_ratio(1).to_string().ends_with("899151951"));
 /// ```
-pub fn estimate_pi_ratio<T>(n: T) -> BigRational
+pub fn estimate_pi_ratio<T>(n: T) -> dashu::rational::RBig
 where
     T: num::FromPrimitive + std::cmp::PartialOrd,
 {
     // A
-    let a_root_two: BigRational = approx_sqrt(2, 10_usize);
-    let a_two: BigRational = BigRational::from_integer(FromPrimitive::from_u64(2).unwrap());
-    let a_denom: BigRational = BigRational::from_integer(FromPrimitive::from_u64(9801).unwrap());
-    let a: BigRational = (a_two * a_root_two) / a_denom;
+    let a_root_two: dashu::rational::RBig = approx_sqrt(2, 10_usize);
+    let a_two: dashu::rational::RBig = dashu::rational::RBig::from(2);
+    let a_denom: dashu::rational::RBig = dashu::rational::RBig::from(9801);
+    let a: dashu::rational::RBig = (a_two * a_root_two) / a_denom;
 
-    let mut i: u32 = 0;
-    let mut sum: BigRational = BigRational::from_integer(FromPrimitive::from_u64(0).unwrap());
-    while T::from_u32(i).unwrap() < n {
+    let mut i: usize = 0;
+    let mut sum: dashu::rational::RBig = dashu::rational::RBig::from(0);
+    while T::from_usize(i).unwrap() < n {
         // B_n
-        let b_top: BigRational =
-            BigRational::from(factorial(BigInt::from(4 * i)) * (1103 + 26390 * i));
-        let b_bot: BigRational =
-            BigRational::from(BigInt::from(4_u32).pow(4 * i) * factorial(BigInt::from(i)).pow(4));
-        let b_n: BigRational = b_top / b_bot;
+        let b_top: dashu::integer::IBig = dashu::integer::IBig::from_str_radix(
+            &(super::factorials::factorial(num::BigInt::from(4 * i)) * (1103 + 26390 * i))
+                .to_str_radix(10),
+            10,
+        )
+        .unwrap();
+        let b_bot: dashu::integer::UBig = dashu::integer::UBig::from_str_radix(
+            &(num::BigInt::from(4_u32).pow(4 * num::ToPrimitive::to_u32(&i).unwrap())
+                * super::factorials::factorial(num::BigInt::from(i)).pow(4))
+            .to_str_radix(10),
+            10,
+        )
+        .unwrap();
+        let b_n: dashu::rational::RBig = dashu::rational::RBig::from_parts(b_top, b_bot);
 
         // C_n
-        let c_n_big_int: BigInt = BigInt::from(99).pow(4 * i) * (factorial(BigInt::from(i))).pow(4);
-        let c_n: BigRational = BigRational::from(c_n_big_int).recip();
+        let c_n_og: dashu::rational::RBig = dashu::rational::RBig::from(99).pow(4 * i)
+            * (dashu::rational::RBig::from_str_radix(
+                &(super::factorials::factorial(num::BigInt::from(i))
+                    .pow(4)
+                    .to_str_radix(10)),
+                10,
+            )
+            .unwrap());
+        let c_n = dashu::rational::RBig::from_parts(
+            c_n_og.denominator().as_ibig().clone(),
+            c_n_og.numerator().sqr().nth_root(2_usize),
+        );
+        // let c_n: BigRational = BigRational::from(c_n_big_int).recip();
 
         sum += b_n * c_n;
         i += 1;
     }
-    (a * sum).recip()
+    inverse(a * sum)
 }
 
-/// Function taken from the num-crate documentation
+/// PLEASE MAKE THIS BETTER
+fn inverse(frac: dashu::rational::RBig) -> dashu::rational::RBig {
+    dashu::rational::RBig::from_parts(
+        frac.denominator().as_ibig().clone(),
+        frac.numerator().sqr().nth_root(2_usize), // right here
+    )
+}
+
+/// Function heavily inspired from the num-crate documentation function of the same name
 /// Uses Newton’s method to approximate a square root to arbitrary precision
 ///
 /// # Example
@@ -77,15 +106,16 @@ where
 ///
 /// println!("{}", approx_sqrt(100_u64, 10_usize));
 /// ```
-pub fn approx_sqrt<T>(number: T, iterations: usize) -> BigRational
+fn approx_sqrt<T>(number: T, iterations: usize) -> dashu::rational::RBig
 where
-    BigInt: From<T>,
+    dashu::rational::RBig: From<T>,
 {
-    let start: BigRational = BigRational::from(BigInt::from(number));
+    let start: dashu::rational::RBig = dashu::rational::RBig::from(number);
     let mut approx = start.clone();
 
     for _ in 0..iterations {
-        approx = (&approx + (&start / &approx)) / BigRational::from(BigInt::from_i8(2).unwrap());
+        approx = (&approx + (&start / &approx))
+            / dashu::rational::RBig::simplest_from_f32(2_f32).unwrap();
     }
     approx
 }
@@ -168,7 +198,7 @@ where
 ///
 /// println!("{}", golden_ratio(BigInt::from(10)));
 /// ```
-pub fn golden_ratio<T>(n: T) -> BigRational
+pub fn golden_ratio<T>(n: T) -> dashu::rational::RBig
 where
     T: num::FromPrimitive
         + num::traits::One
@@ -176,13 +206,19 @@ where
         + std::clone::Clone
         + std::cmp::PartialOrd
         + std::ops::AddAssign,
-    BigInt: From<T>,
+    num::BigInt: From<T>,
 {
     if n < T::from_i32(2).unwrap() {
-        return BigRational::from(BigInt::from_i8(0).unwrap());
+        return dashu::rational::RBig::from_parts(
+            dashu::integer::IBig::ZERO,
+            dashu::integer::UBig::ONE,
+        );
     }
-    let mut lucas: Vec<BigInt> = crate::sequences::lucas_sequence(n);
-    let numerator: BigRational = BigRational::from(lucas.pop().unwrap());
-    let demom: BigRational = BigRational::from(lucas.pop().unwrap());
-    numerator / demom
+    let mut lucas = crate::sequences::lucas_sequence(n);
+    let numer = lucas.pop().unwrap();
+    let denom = lucas.pop().unwrap();
+    dashu::rational::RBig::from_parts(
+        dashu::integer::IBig::from_str_radix(&numer.to_str_radix(10), 10).unwrap(),
+        dashu::integer::UBig::from_str_radix(&denom.to_str_radix(10), 10).unwrap(),
+    )
 }
