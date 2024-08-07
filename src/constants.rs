@@ -170,13 +170,18 @@ where
 /// ```
 pub fn golden_ratio<T>(n: T) -> BigRational
 where
-    T: num::FromPrimitive + std::cmp::PartialOrd,
+    T: num::FromPrimitive
+        + num::traits::One
+        + num::traits::Zero
+        + std::clone::Clone
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign,
     BigInt: From<T>,
 {
     if n < T::from_i32(2).unwrap() {
         return BigRational::from(BigInt::from_i8(0).unwrap());
     }
-    let mut lucas: Vec<BigInt> = crate::sequences::lucas_sequence(BigInt::from(n));
+    let mut lucas: Vec<BigInt> = crate::sequences::lucas_sequence(n);
     let numerator: BigRational = BigRational::from(lucas.pop().unwrap());
     let demom: BigRational = BigRational::from(lucas.pop().unwrap());
     numerator / demom

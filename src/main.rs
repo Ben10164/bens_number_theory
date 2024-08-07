@@ -1,6 +1,8 @@
-use bens_number_theory::sequences::*;
+use bens_number_theory::constants::*;
+use bens_number_theory::ratio_to_str;
 
 fn main() {
-    let test = fib_rec_custom(&[100, 2, 5, 1], 3);
+    let test: num::rational::Ratio<num::BigInt> = golden_ratio(100);
     println!("{:?}", test);
+    println!("{}", ratio_to_str(test));
 }

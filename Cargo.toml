@@ -12,4 +12,6 @@ keywords = ["testing", "beginner", "number-theory"]
 rustdoc-args = [ "--html-in-header", "./src/docs-header.html", "--document-private-items" ]
 
 [dependencies]
-num = "0.4.2"
+bigdecimal = "0.4.5"
+dashu = "=0.4.2"
+num = "=0.4.2"
